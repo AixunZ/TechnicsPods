@@ -179,8 +179,10 @@ public final class MainActivity extends AppCompatActivity {
             if (ModulePreferences.AUTO_MANAGE.equals(key) && checked) { enableAutomaticManagement(); return; }
             ModulePreferences.get(this).edit().putBoolean(key, checked).apply();
             ModulePreferences.mirrorToFramework(this);
-            if (ModulePreferences.AUTO_MANAGE.equals(key))
-                startService(new Intent(this, Az100MonitorService.class).setAction(Az100MonitorService.ACTION_STOP));
+            if (ModulePreferences.AUTO_MANAGE.equals(key)) {
+                Az100ConnectionRuntime.get(this).cancel();
+                stopService(new Intent(this, Az100MonitorService.class));
+            }
             refreshSettings();
         });
     }

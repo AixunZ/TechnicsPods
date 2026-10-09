@@ -53,6 +53,7 @@ $signedRelease = Join-Path $delivery "$prefix-release-test-signed.apk"
     --out $signedRelease (Join-Path $delivery "$prefix-release-unsigned.apk")
 if ($LASTEXITCODE -ne 0) { throw 'Test signing failed' }
 $artifactPaths += $signedRelease
+if (Test-Path -LiteralPath "$signedRelease.idsig") { $artifactPaths += "$signedRelease.idsig" }
 $certificate = $null
 foreach ($name in @('debug.apk', 'release-test-signed.apk', 'ipc-tests.apk')) {
     $verification = (& $signer verify --verbose --print-certs (Join-Path $delivery "$prefix-$name") | Out-String)

@@ -6,6 +6,7 @@ Artifacts:
 
 - `dist/0.10.0-beta.1/TechnicsPods-0.10.0-beta.1-debug.apk`: installable debug APK, signed with the local Android debug/test certificate.
 - `dist/0.10.0-beta.1/TechnicsPods-0.10.0-beta.1-release-test-signed.apk`: minified Release output signed with that same test certificate, for testing shrink behavior.
+- Its optional `.apk.idsig` sidecar supports incremental installation; its checksum is included when generated.
 - `dist/0.10.0-beta.1/TechnicsPods-0.10.0-beta.1-release-unsigned.apk`: minified and resource-shrunk Release output; intentionally unsigned.
 - `dist/0.10.0-beta.1/TechnicsPods-0.10.0-beta.1-ipc-tests.apk`: Android instrumentation test APK.
 - `dist/0.10.0-beta.1/TechnicsPods-0.10.0-beta.1-mapping.txt`: Release mapping for crash retracing.
@@ -18,11 +19,11 @@ Run `tools/package-beta.ps1` after the full build and a clean, reviewed source c
 
 | Artifact suffix | Bytes | SHA-256 |
 | --- | ---: | --- |
-| `debug.apk` | 15162336 | `c1cda1fe3a4e44800a6933e856410e852c5106db5f590774911ef793ede0a7b6` |
-| `release-test-signed.apk` | 1799123 | `d72a9eca14951c6734457deff769857d380615063783210c0e2e2fd6b7f1f53f` |
-| `release-unsigned.apk` | 1740624 | `5709580e1b5499a1f9cf7391d6f21a25b4c45aa5225b1ad82d3c56d042b4b9e9` |
+| `debug.apk` | 15162336 | `b9e13b827a60a0eea48932249ae7edb1d593e39c6f6639aaa4552256432b78ab` |
+| `release-test-signed.apk` | 1799123 | `8797e33cb9f830a3e6b3e0f5c91f5a17516821b764ea7848624cbf583673e782` |
+| `release-unsigned.apk` | 1740704 | `43969fda4ab4c923522cfb0fea4a19dd87143e7405df7021f5a506dda2bba70e` |
 | `ipc-tests.apk` | 845603 | `65fd4f163b96370ee2474b76de40bd3eac094c860ace34db43a52ccfd2d2c44d` |
-| `mapping.txt` | 6341085 | `f280734c1c5d6e8123270d2cf90ea36bebc478a4f5fc9e1c9d5ad4132bf6d589` |
+| `mapping.txt` | 6341209 | `85bd0eccef8dae9fd7f7dc2e6aabf73fddefa2ffdb8bb8f884d17ed20a5cfe91` |
 
 Debug, test-signed Release and instrumentation artifacts share test-certificate SHA-256 `610bdf09702579a3c9328886e5d514c266e1ef573abd1bd7abea37d487874446`. Certificate equality was verified; actual upgrade installation still requires a device. A build signed by a different previous key cannot update the installed package in place.
 
