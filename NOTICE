@@ -1,0 +1,16 @@
+TechnicsPods
+Copyright (C) 2026 TechnicsPods contributors
+
+This project is licensed under GNU GPL version 3.
+
+Architecture and implementation techniques were studied from these GPL-3.0 projects:
+
+- HuaweiPods, copyright its contributors:
+  https://github.com/Nshpiter/HuaweiPods
+- SonyPods, copyright its contributors:
+  https://github.com/Mercury000/SonyPods
+- OppoPods, copyright its contributors:
+  https://github.com/1812z/OppoPods
+
+Technics, Panasonic, EAH-AZ100, Xiaomi and HyperOS are trademarks of their
+respective owners. This project is not affiliated with or endorsed by them.

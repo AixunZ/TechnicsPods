@@ -1,0 +1,19 @@
+{
+  "name": "az100_battery_both_100",
+  "firmware": "JNZ1ZE 1.040",
+  "precondition": "Both earbuds connected and reporting 100 percent",
+  "tx": [
+    "055A0300D60C00",
+    "055A0300D60C01"
+  ],
+  "rx": [
+    "055B0300D60C00",
+    "055D0500D60C000064",
+    "055B0300D60C00",
+    "055D0500D60C000164"
+  ],
+  "expectedState": {
+    "leftBatteryPercent": 100,
+    "rightBatteryPercent": 100
+  }
+}

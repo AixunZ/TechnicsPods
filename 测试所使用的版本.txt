@@ -1,0 +1,5 @@
+安卓版本：17
+hyperos版本：4.0.0.17
+audio connect版本：4.4.0
+耳机固件版本：JNZ1ZE 1.040
+			VG_CMN_01.00

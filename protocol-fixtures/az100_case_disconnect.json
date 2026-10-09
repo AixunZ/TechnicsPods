@@ -1,0 +1,30 @@
+{
+  "name": "az100_case_disconnect",
+  "firmware": "JNZ1ZE 1.040",
+  "precondition": "Both earbuds out of the cradle and connected",
+  "sequence": [
+    {
+      "operation": "both_earbuds_out",
+      "elapsedMillis": 0,
+      "expectedState": {"transportConnected": true, "batterySource": "last_known_or_live"}
+    },
+    {
+      "operation": "left_earbud_in_open_cradle",
+      "elapsedMillis": 13468,
+      "rx": ["055D0400000D0000"],
+      "expectedState": {"transportConnected": true, "partnerAvailable": false}
+    },
+    {
+      "operation": "both_earbuds_in_open_cradle",
+      "elapsedMillis": 25748,
+      "meta": ["socket-close", "socket-close", "socket-close"],
+      "expectedState": {"transportConnected": false, "batterySource": "cached"}
+    },
+    {
+      "operation": "lid_closed_then_reopened",
+      "elapsedMillis": 51109,
+      "observed": "No RFCOMM reconnect or battery notification before capture stopped",
+      "expectedState": {"transportConnected": false, "batterySource": "cached"}
+    }
+  ]
+}

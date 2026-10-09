@@ -1,0 +1,43 @@
+{
+  "name": "az100_noise_control_transitions",
+  "firmware": "JNZ1ZE 1.040",
+  "precondition": "Outside control off; remembered noise and ambient levels both 100",
+  "sequence": [
+    {
+      "operation": "off_to_noise_cancelling",
+      "tx": ["055A05000B00016464", "055A02000A00"],
+      "rx": ["055B03000B0000", "055B06000A0000016464"],
+      "expectedState": {"noiseControlMode": "noise_cancelling"}
+    },
+    {
+      "operation": "noise_cancelling_to_ambient_transparent",
+      "tx": ["055A05000B00026464", "055A02000A00"],
+      "rx": ["055B03000B0000", "055B06000A0000026464"],
+      "expectedState": {"noiseControlMode": "ambient", "ambientMode": "transparent"}
+    },
+    {
+      "operation": "ambient_transparent_to_attention",
+      "tx": ["055A040022000101", "055A02002100"],
+      "rx": ["055B0300220000", "055B05002100000101"],
+      "expectedState": {"ambientMode": "attention", "musicBehavior": "stop"}
+    },
+    {
+      "operation": "attention_to_off",
+      "tx": ["055A05000B00006464", "055A02000A00"],
+      "rx": ["055B03000B0000", "055B06000A0000006464"],
+      "expectedState": {"noiseControlMode": "off"}
+    },
+    {
+      "operation": "adaptive_anc_on",
+      "tx": ["055A05000B00016464", "055A02000A00", "055A0300680001", "055A02006700"],
+      "rx": ["055B03000B0000", "055B06000A0000016464", "055B0300680000", "055B040067000001"],
+      "expectedState": {"noiseControlMode": "noise_cancelling", "adaptiveAnc": true}
+    },
+    {
+      "operation": "adaptive_anc_off",
+      "tx": ["055A0300680000", "055A02006700"],
+      "rx": ["055B0300680000", "055B040067000000"],
+      "expectedState": {"adaptiveAnc": false}
+    }
+  ]
+}

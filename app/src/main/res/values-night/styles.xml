@@ -1,0 +1,21 @@
+<resources>
+    <style name="Theme.TechnicsPods" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/tp_accent</item>
+        <item name="colorOnPrimary">@color/tp_on_accent</item>
+        <item name="colorPrimaryContainer">@color/tp_accent_soft</item>
+        <item name="colorOnPrimaryContainer">@color/tp_text_primary</item>
+        <item name="colorSecondary">@color/tp_accent</item>
+        <item name="colorSurface">@color/tp_surface</item>
+        <item name="colorOnSurface">@color/tp_text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/tp_text_secondary</item>
+        <item name="colorOutline">@color/tp_border</item>
+        <item name="android:colorBackground">@color/tp_background</item>
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">@color/tp_accent</item>
+        <item name="android:windowBackground">@color/tp_background</item>
+        <item name="android:navigationBarColor">@color/tp_background</item>
+        <item name="android:statusBarColor">@color/tp_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>

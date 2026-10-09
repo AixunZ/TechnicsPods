@@ -1,0 +1,10 @@
+<resources>
+    <color name="tp_background">#101719</color>
+    <color name="tp_surface">#182326</color>
+    <color name="tp_text_primary">#EFF6F7</color>
+    <color name="tp_text_secondary">#A8BEC1</color>
+    <color name="tp_accent">#6ED6D3</color>
+    <color name="tp_on_accent">#0D292B</color>
+    <color name="tp_accent_soft">#193E40</color>
+    <color name="tp_border">#2D4549</color>
+</resources>

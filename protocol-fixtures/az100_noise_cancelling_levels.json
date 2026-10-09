@@ -1,0 +1,33 @@
+{
+  "name": "az100_noise_cancelling_levels",
+  "firmware": "JNZ1ZE 1.040",
+  "precondition": "Ordinary noise cancelling enabled; adaptive ANC off; starting level 1",
+  "confirmedRange": {"minimum": 1, "maximum": 100},
+  "sequence": [
+    {
+      "operation": "noise_level_25",
+      "tx": ["055A05000B00011964", "055A02000A00"],
+      "rx": ["055B03000B0000", "055B06000A0000011964"],
+      "expectedState": {"noiseControlMode": "noise_cancelling", "noiseCancellingLevel": 25}
+    },
+    {
+      "operation": "noise_level_50",
+      "tx": ["055A05000B00013264", "055A02000A00"],
+      "rx": ["055B03000B0000", "055B06000A0000013264"],
+      "expectedState": {"noiseControlMode": "noise_cancelling", "noiseCancellingLevel": 50}
+    },
+    {
+      "operation": "noise_level_75",
+      "tx": ["055A05000B00014B64", "055A02000A00"],
+      "rx": ["055B03000B0000", "055B06000A0000014B64"],
+      "expectedState": {"noiseControlMode": "noise_cancelling", "noiseCancellingLevel": 75}
+    },
+    {
+      "operation": "noise_level_100",
+      "tx": ["055A05000B00016464", "055A02000A00"],
+      "rx": ["055B03000B0000", "055B06000A0000016464"],
+      "expectedState": {"noiseControlMode": "noise_cancelling", "noiseCancellingLevel": 100}
+    }
+  ],
+  "staticEvidence": "The official app maps UI value 0 to protocol value 1 and passes all other values unchanged. Level 1 was the unchanged capture baseline, so it emitted no frame."
+}

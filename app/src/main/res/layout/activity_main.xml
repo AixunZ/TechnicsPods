@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout
+        android:id="@+id/main_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <TextView
+            style="@style/TP.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name" />
+        <TextView
+            style="@style/TP.Model"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/product_model" />
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="12dp"
+            android:contentDescription="@string/product_image_description"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_az100_placeholder" />
+        <TextView
+            android:id="@+id/connection_status"
+            style="@style/TP.Section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:accessibilityLiveRegion="polite"
+            android:text="@string/state_auto_off" />
+        <LinearLayout
+            android:id="@+id/battery_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+            <LinearLayout android:id="@+id/battery_left_card" style="@style/TP.BatteryCard" android:layout_marginEnd="8dp">
+                <TextView style="@style/TP.BatteryLabel" android:text="@string/battery_left" />
+                <TextView android:id="@+id/battery_left_value" style="@style/TP.BatteryValue" />
+                <TextView android:id="@+id/battery_left_state" style="@style/TP.BatteryState" />
+            </LinearLayout>
+            <LinearLayout android:id="@+id/battery_right_card" style="@style/TP.BatteryCard" android:layout_marginEnd="8dp">
+                <TextView style="@style/TP.BatteryLabel" android:text="@string/battery_right" />
+                <TextView android:id="@+id/battery_right_value" style="@style/TP.BatteryValue" />
+                <TextView android:id="@+id/battery_right_state" style="@style/TP.BatteryState" />
+            </LinearLayout>
+            <LinearLayout android:id="@+id/battery_case_card" style="@style/TP.BatteryCard">
+                <TextView style="@style/TP.BatteryLabel" android:text="@string/battery_case" />
+                <TextView android:id="@+id/battery_case_value" style="@style/TP.BatteryValue" />
+                <TextView android:id="@+id/battery_case_state" style="@style/TP.BatteryState" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView android:id="@+id/outside_mode" style="@style/TP.Body" android:layout_marginTop="16dp" />
+        <TextView android:id="@+id/firmware" style="@style/TP.Caption" android:layout_marginTop="8dp" />
+        <TextView style="@style/TP.Section" android:layout_marginTop="28dp" android:text="@string/section_settings" />
+        <TextView android:id="@+id/framework_status" style="@style/TP.Caption" android:layout_marginTop="8dp" />
+        <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/auto_switch" style="@style/TP.Setting" android:text="@string/auto_management" />
+        <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/icon_switch" style="@style/TP.Setting" android:text="@string/status_icon" />
+        <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/diagnostics_switch" style="@style/TP.Setting" android:text="@string/diagnostic_probes" />
+        <TextView style="@style/TP.Section" android:layout_marginTop="28dp" android:text="@string/section_permissions" />
+        <TextView android:id="@+id/permission_status" style="@style/TP.Caption" android:layout_marginTop="8dp" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/request_permissions" style="@style/TP.Command" android:text="@string/request_permissions" app:icon="@android:drawable/ic_lock_lock" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/open_app_settings" style="@style/TP.Command" android:text="@string/open_app_settings" app:icon="@android:drawable/ic_menu_preferences" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/open_battery_settings" style="@style/TP.Command" android:text="@string/open_battery_settings" app:icon="@android:drawable/ic_menu_preferences" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/recover_background" style="@style/TP.Command" android:text="@string/recover_background" app:icon="@android:drawable/ic_popup_sync" />
+        <TextView style="@style/TP.Section" android:layout_marginTop="28dp" android:text="@string/section_capabilities" />
+        <TextView android:id="@+id/capability_report" style="@style/TP.Caption" android:layout_marginTop="8dp" android:text="@string/capability_unknown" />
+        <TextView style="@style/TP.Section" android:layout_marginTop="28dp" android:text="@string/section_devices" />
+        <TextView android:id="@+id/selected_device" style="@style/TP.Body" android:layout_marginTop="8dp" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/choose_device" style="@style/TP.Command" app:icon="@android:drawable/ic_menu_search" android:text="@string/choose_device" />
+        <TextView style="@style/TP.Section" android:layout_marginTop="28dp" android:text="@string/section_artwork" />
+        <TextView android:id="@+id/art_status" style="@style/TP.Caption" android:layout_marginTop="8dp" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/import_art" style="@style/TP.Command" app:icon="@android:drawable/ic_menu_gallery" android:text="@string/import_art" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/official_art" style="@style/TP.Command" app:icon="@android:drawable/ic_menu_save" android:text="@string/official_art" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/reset_art" style="@style/TP.Command" app:icon="@android:drawable/ic_menu_revert" android:text="@string/reset_art" />
+        <TextView style="@style/TP.Section" android:layout_marginTop="28dp" android:text="@string/section_advanced" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/open_diagnostics" style="@style/TP.Command" app:icon="@android:drawable/ic_menu_info_details" android:text="@string/open_diagnostics" />
+    </LinearLayout>
+</ScrollView>
