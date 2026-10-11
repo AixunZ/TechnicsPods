@@ -90,6 +90,7 @@ public final class Az100StateProvider extends ContentProvider {
                 Bundle result = accepted(owner.control(mode, noise, expectedAddress));
                 boolean accepted = result.getBoolean("accepted", false);
                 result.putString("request_id", accepted ? owner.requestId() : null);
+                result.putLong("generation", owner.generation());
                 result.putString("status", accepted ? "pending" : "rejected");
                 return result;
             }
@@ -147,6 +148,9 @@ public final class Az100StateProvider extends ContentProvider {
         result.putLong("left_firmware_updated_at", state.left().firmwareUpdatedAtMillis());
         result.putLong("right_firmware_updated_at", state.right().firmwareUpdatedAtMillis());
         result.putString("firmware", state.left().firmware() != null ? state.left().firmware() : state.right().firmware());
+        result.putString("device_color", state.deviceColor().artKey());
+        result.putInt("device_color_code", state.deviceColor().code());
+        result.putLong("device_color_updated_at", state.deviceColorUpdatedAtMillis());
         result.putString("connection_status", runtime().status());
         result.putString("connection_owner", runtime().isOfficialBusy() ? "official"
                 : runtime().isRunning() ? "module" : "none");

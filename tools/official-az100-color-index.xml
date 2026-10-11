@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Reviewed against Technics Audio Connect 5.0.1 (104), APK index 1. -->
+<az100-color-index model="EAH-AZ100" package="com.panasonic.technicsaudioconnect"
+    sourceVersion="5.0.1" sourceVersionCode="104"
+    apkSha256="ce789cb9460cd10a9b140dd3ca8e82908986165b9a5a192e3a657e448cb5bd63"
+    signatureSha256="d28328e677f11ea0d4a77f421fbd55dee2a9c1298a640acfd3e6abbea4027138">
+    <color name="black" suffix="blk" case="drawable/az100_blk_c" left="drawable/az100_blk_l" right="drawable/az100_blk_r"
+        caseEntry="res/gtS.webp" leftEntry="res/cFV.webp" rightEntry="res/LSE.webp"
+        caseSha256="4815a20d7f774966bfbed5230caf50821448949fd39dd0ba736e3ff862b721d8"
+        leftSha256="b19db0d5598c8cce840bb8ffc7739287a1726763b96afd1155a4f1aa5abf4481"
+        rightSha256="738255a0746774328a4d8efcbf1d4b903e2c5f8aff671018ef29dd1a1839ebe2" />
+    <color name="blue" suffix="a" case="drawable/az100_a_c" left="drawable/az100_a_l" right="drawable/az100_a_r"
+        caseEntry="res/n9D.webp" leftEntry="res/41q.webp" rightEntry="res/3YQ.webp"
+        caseSha256="c96bd3fd706b854f984c806cfcf71d4073bef95a08ae833b50d3b22c24ff1236"
+        leftSha256="ecdf5b4ab9f1ec2aa904e14f0a2746b4ea0f8a14061b5f5d0db03a03762d032e"
+        rightSha256="65cc46199ceed6fef97684f528a106d6c898d2184e0f17aba066919aabfd8be5" />
+    <color name="gold" suffix="gld" case="drawable/az100_gld_c" left="drawable/az100_gld_l" right="drawable/az100_gld_r"
+        caseEntry="res/39d1.webp" leftEntry="res/uVm.webp" rightEntry="res/qVR.webp"
+        caseSha256="a009bd98f2bed43311da4887aad8fda8980139b3d3503a6ed50dadaf48e70ca2"
+        leftSha256="205d38158cac0bc07f0773566f9681b63a06065c936d2eeed59718445805737d"
+        rightSha256="aae2e8c7359ee97d956037929757fc94a70cda4fe4301c5dd872c749f2813565" />
+    <color name="silver" suffix="slv" case="drawable/az100_slv_c" left="drawable/az100_slv_l" right="drawable/az100_slv_r"
+        caseEntry="res/Grx.webp" leftEntry="res/8Z1.webp" rightEntry="res/fc5.webp"
+        caseSha256="92388bcf1611c0ad2af359aa2f67ff037c3aa33db2f85bf5f9064c10dee2f3d8"
+        leftSha256="c8f75a0f07e3f738ba5ca92cf362d989bbbfac63eaff2b7b7977486315ee4b68"
+        rightSha256="4f2f63341ab05e20031e1fb9c3a26b6b856eea4060ad22cfa870f5bc117d1a4e" />
+    <color name="violet" suffix="v" case="drawable/az100_v_c" left="drawable/az100_v_l" right="drawable/az100_v_r"
+        caseEntry="res/hgi.webp" leftEntry="res/poh.webp" rightEntry="res/4kr.webp"
+        caseSha256="bf65aa5b2146319338cca92edf2e175af3a7b9f459352bf1af3cf963b7c96022"
+        leftSha256="9e039aa177a612b9398331b297d4300463ddb276a7d1414a6ca04aee360c286b"
+        rightSha256="2c7454dd6a2e7d0aff526e382c6e45bbff170ba9871fa8e6e91c896fce94713c" />
+</az100-color-index>

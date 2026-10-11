@@ -1,5 +1,11 @@
 # System and HyperOS surface probes
 
+## Current status (2026-10-11, beta.2)
+
+The user has confirmed both system entries' control/state updates, Settings haptics and the status-bar icon. MiLink artwork replacement was confirmed earlier; Settings artwork replacement was confirmed on 2026-10-11. Settings uses the AZ100 fragment's identity-bound conservative single-header selector, rather than a verified per-ROM resource-ID list. Basic rendering success does not establish every device-switch, async write-back or restore case.
+
+The Device-page rows **选择 AZ100**, **耳机颜色** and **设备图片** still do not respond. Further repair is paused at the user's request. The supplied `technics-az100-capture-20261011-003021.jsonl` contains 20 META records and no Settings or `TechnicsPods-Art` image records; it cannot identify the Settings image resource. Future art diagnostics use LSPosed logs after enabling diagnostic probes, but no further capture is requested during this pause. See [current handoff](CURRENT_SESSION_HANDOFF.md).
+
 The project first added a read-only `com.android.bluetooth` inventory and then added read-only HyperOS surface discovery. These probes do not change return values or send Bluetooth commands.
 
 ## Collect the inventory
@@ -64,9 +70,10 @@ Do not manually redact method names or parameter types; those are required to se
   的新鲜状态。
 - 所有未知返回类型、非 AZ100 设备、离线或过期状态都继续执行系统原方法。
 
-Settings 的 `updateAncMode(int, boolean)` 和 `updateAncLevel(int, boolean)`
-现在只拦截第二个参数为 `true` 的用户点击，分别转发模式和降噪等级；内部 UI
-回放继续执行原方法。写入复用现有 ACK、强制回读和失败处理客户端，确认成功后
+Settings 的 `updateAncMode(int, boolean)` 只转发真实用户点击的模式请求；
+内部 UI 回放继续执行原方法。`updateAncLevel` 的宿主等级编码尚未确认，
+当前 beta 不转发等级写入。这一限制优先于历史 0.9.15/v29 的等级转发记录。
+模式写入复用现有 ACK、强制回读和失败处理客户端，确认成功后
 通过 Provider 更新共享状态并刷新当前 Fragment。日志曾确认故障版本记录了
 `module write bridge disabled`；该路径已在 0.9.15 修复，并已在记录的实机上验证成功。
 
@@ -89,6 +96,7 @@ The final hardware log confirms `fc.t.b0()` and
 means the inner Fusion entry reaches the stock headset control page. The outer
 blue phone-host marker remains a separate, unresolved Device Center status model.
 
-Do not interpret this route as proof that every stock detail-page button writes
-AZ100 state. Button forwarding and live state refresh remain a later integration
-step and must use the guarded Panasonic control client.
+This historical route log alone does not prove stock-button writes. Later user
+reports confirm mode forwarding and live state updates in both current system
+entries through the guarded central control client. Native Settings ANC-strength
+encoding and broader lifecycle/error cases remain unverified.

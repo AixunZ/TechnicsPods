@@ -14,6 +14,7 @@ import java.lang.ref.WeakReference;
 import dev.technics.pods.state.Az100StateProvider;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 
 import java.lang.reflect.Field;
@@ -26,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 import dev.technics.pods.capture.CaptureContract;
 import dev.technics.pods.state.Az100StateFreshness;
@@ -59,6 +61,11 @@ final class Az100SettingsBridgeHook {
     private long cachedIdentityRevision = -1L;
     private final AtomicBoolean stateRefreshPending = new AtomicBoolean();
     private volatile WeakReference<Object> activeFragment = new WeakReference<>(null);
+    private volatile WeakReference<View> activeFragmentView = new WeakReference<>(null);
+    private final AtomicLong viewGeneration = new AtomicLong();
+    private volatile long runtimeGeneration = -1L;
+    private final Az100SettingsHapticPolicy hapticPolicy = new Az100SettingsHapticPolicy();
+    private int hapticHooks;
     private final AtomicBoolean controlPending = new AtomicBoolean();
     private final ExecutorService controlExecutor = Executors.newSingleThreadExecutor(r -> {
         Thread thread = new Thread(r, "TechnicsPods-Settings-control");
@@ -79,6 +86,9 @@ final class Az100SettingsBridgeHook {
             cachedAt = 0L;
             cachedIdentityRevision = -1L;
             activeFragment = new WeakReference<>(null);
+            activeFragmentView = new WeakReference<>(null);
+            viewGeneration.incrementAndGet();
+            runtimeGeneration = -1L;
         }
     }
 
@@ -141,6 +151,8 @@ final class Az100SettingsBridgeHook {
                 "MiuiHeadsetFragment.updateAncMode(int,boolean);noise level mapping pending verification");
         HostCapabilityReport.report(appContext, "settings_noise_level", 0,
                 "Native updateAncLevel encoding unverified; no conversion or writes enabled");
+        HostCapabilityReport.report(appContext, "settings_haptics", hapticHooks,
+                "Accepted updateAncMode clicks only; request, identity and lifecycle guarded");
         readState();
     }
 
@@ -274,6 +286,9 @@ final class Az100SettingsBridgeHook {
                         .setId(hookId(HEADSET_FRAGMENT, method))
                         .setExceptionMode(XposedInterface.ExceptionMode.PROTECTIVE)
                         .intercept(chain -> interceptFragment(method, chain));
+                if (name.equals("updateAncMode") && method.getParameterCount() == 2
+                        && method.getParameterTypes()[0] == int.class
+                        && method.getParameterTypes()[1] == boolean.class) hapticHooks++;
                 count++;
             }
             return count;
@@ -289,13 +304,22 @@ final class Az100SettingsBridgeHook {
         String name = method.getName();
         Object fragment = chain.getThisObject();
         if (name.equals("onDestroyView")) {
-            if (activeFragment.get() == fragment) activeFragment.clear();
+            if (activeFragment.get() == fragment) {
+                activeFragment.clear();
+                activeFragmentView.clear();
+                viewGeneration.incrementAndGet();
+            }
             return chain.proceed();
         }
         if (name.equals("onCreateView") || name.equals("onServiceConnected")) {
             Object result = chain.proceed();
             if (isTargetOwner(fragment)) {
+                View view = result instanceof View created ? created : fragmentView(fragment);
+                if (activeFragment.get() != fragment || activeFragmentView.get() != view) {
+                    viewGeneration.incrementAndGet();
+                }
                 activeFragment = new WeakReference<>(fragment);
+                activeFragmentView = new WeakReference<>(view);
                 injectFragmentStatus(fragment, true);
             }
             return result;
@@ -335,6 +359,8 @@ final class Az100SettingsBridgeHook {
 
     private void startSettingsControl(Object fragment, Az100SettingsControlPolicy.Request request) {
         long selectionRevision = identity.revision();
+        long expectedViewGeneration = viewGeneration.get();
+        WeakReference<View> expectedView = new WeakReference<>(fragmentView(fragment));
         BluetoothDevice device = findBluetoothDevice(fragment);
         String expectedAddress = device == null ? null
                 : Az100HookDeviceIdentity.normalize(safeAddress(device));
@@ -345,7 +371,11 @@ final class Az100SettingsBridgeHook {
                 String currentAddress = currentDevice == null
                         ? null : Az100HookDeviceIdentity.normalize(safeAddress(currentDevice));
                 if (selectionRevision != identity.revision() || !isTargetOwner(fragment)
-                        || !expectedAddress.equals(currentAddress)) return;
+                        || !expectedAddress.equals(currentAddress)
+                        || expectedViewGeneration != viewGeneration.get()
+                        || activeFragment.get() != fragment
+                        || expectedView.get() == null
+                        || activeFragmentView.get() != expectedView.get()) return;
                 int mode = request.mode();
                 if (mode < 0) {
                     BridgeState state = readState(expectedAddress);
@@ -366,6 +396,8 @@ final class Az100SettingsBridgeHook {
                 if (published == null || !published.getBoolean("accepted", false)) {
                     throw new IllegalStateException("Control request rejected");
                 }
+                acknowledgeAcceptedControl(fragment, expectedView, expectedAddress,
+                        selectionRevision, expectedViewGeneration, published);
                 clearStateCache();
             } catch (Throwable error) {
                 module.log(Log.WARN, TAG, "AZ100 Settings control failed", error);
@@ -377,6 +409,53 @@ final class Az100SettingsBridgeHook {
                 });
             }
         });
+    }
+
+    private void acknowledgeAcceptedControl(Object fragment, WeakReference<View> expectedView,
+            String expectedAddress, long selectionRevision, long expectedViewGeneration,
+            Bundle accepted) {
+        String requestId = accepted.getString("request_id");
+        long acceptedGeneration = accepted.getLong("generation", -1L);
+        if (requestId == null || requestId.isBlank() || acceptedGeneration < 0L) return;
+        try {
+            Bundle state = appContext.getContentResolver().call(Az100StateProvider.STATE_URI,
+                    Az100StateProvider.METHOD_STATE, null, null);
+            if (state == null || state.getBoolean("official_busy", false)
+                    || state.getLong("generation", -1L) != acceptedGeneration
+                    || !requestId.equals(state.getString("request_id"))
+                    || !expectedAddress.equals(Az100HookDeviceIdentity.normalize(
+                    state.getString("device_address")))) return;
+            synchronized (identity) {
+                if (selectionRevision != identity.revision()) return;
+                runtimeGeneration = acceptedGeneration;
+            }
+            Az100SettingsHapticPolicy.Session expected = new Az100SettingsHapticPolicy.Session(
+                    expectedAddress, selectionRevision, expectedViewGeneration, acceptedGeneration);
+            new Handler(Looper.getMainLooper()).post(() -> {
+                View view = expectedView.get();
+                if (view == null) return;
+                BluetoothDevice device = findBluetoothDevice(fragment);
+                String address = device == null ? null
+                        : Az100HookDeviceIdentity.normalize(safeAddress(device));
+                Az100SettingsHapticPolicy.Session current = new Az100SettingsHapticPolicy.Session(
+                        address, identity.revision(), viewGeneration.get(), runtimeGeneration);
+                boolean active = activeFragment.get() == fragment
+                        && activeFragmentView.get() == view && fragmentView(fragment) == view
+                        && view.isShown() && view.hasWindowFocus();
+                if (!hapticPolicy.claim(true, true, requestId, expected, current, active,
+                        view.isAttachedToWindow(), view.isHapticFeedbackEnabled())) return;
+                try {
+                    // No ignore-setting flags: the platform owns global haptic preferences.
+                    if (!view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)) {
+                        view.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK);
+                    }
+                } catch (RuntimeException error) {
+                    logOnce("haptic-unavailable", "Settings click feedback unavailable");
+                }
+            });
+        } catch (RuntimeException error) {
+            logOnce("haptic-state-unavailable", "Cannot verify Settings click feedback session");
+        }
     }
 
     private void clearStateCache() {
@@ -494,12 +573,14 @@ final class Az100SettingsBridgeHook {
             controlExecutor.execute(() -> {
                 long identityRevision = identity.revision();
                 try {
-                    BridgeState updated = BridgeState.from(context.getContentResolver().call(
-                            Az100StateProvider.STATE_URI, Az100StateProvider.METHOD_STATE, null, null));
+                    Bundle state = context.getContentResolver().call(
+                            Az100StateProvider.STATE_URI, Az100StateProvider.METHOD_STATE, null, null);
+                    BridgeState updated = BridgeState.from(state);
                     synchronized (identity) {
                         if (identityRevision == identity.revision()) {
                             cachedState = updated;
                             cachedIdentityRevision = identityRevision;
+                            runtimeGeneration = state == null ? -1L : state.getLong("generation", -1L);
                         }
                     }
                 } catch (Throwable error) {
@@ -507,6 +588,7 @@ final class Az100SettingsBridgeHook {
                         if (identityRevision == identity.revision()) {
                             cachedState = null;
                             cachedIdentityRevision = identityRevision;
+                            runtimeGeneration = -1L;
                         }
                     }
                 } finally {

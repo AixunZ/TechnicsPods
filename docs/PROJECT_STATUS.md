@@ -1,34 +1,50 @@
 # TechnicsPods Project Status
 
-Last updated: 2026-10-09
+Last updated: 2026-10-11 (public beta.3 preparation)
+
+## Beta.3 public test release
+
+Candidate: `0.10.0-beta.3` / `versionCode 32`. This is the first public test release and is intended for a GitHub **Pre-release**. The About page developer credit is **AixunZ**. The public package set has been generated locally with the maintainer-signed release APK, matching source archive and mapping, `SHA256SUMS.txt`, and `delivery-manifest.json`; GitHub upload remains a publishing step. The verified release certificate SHA-256 is `97598098835abf3b86d18b028333a3c06d575fd7a0f5e14e2a4d438b5b13292d`, and the release APK SHA-256 is `c6257b7105a594d5d1814715bc41594089b0938814b8a37d2c93a3a065051986`. Private signing material stays outside the repository.
+
+The three Device-page rows **选择 AZ100**, **耳机颜色** and **设备图片** remain unresponsive on the recorded phone. Device selection, manual colour changes and artwork import are consequently not accepted through those rows, and further repair is paused for this beta. The latest user reports still cover only partial physical behavior: system control/state updates, Settings haptics, the status-bar icon and MiLink/Settings artwork replacement. No adb device was available for this release workflow, so instrumentation execution and complete hardware acceptance are not claimed.
+
+For the public project page, the maintainer estimates that more than 500 million GPT tokens were used in development as of 2026-10-11. Models named by the maintainer include GPT-5.6-sol, GPT-6.0-Astra and GPT-6.1-sol. This is a maintainer-provided estimate and is not an OpenAI-endorsed or independently audited usage report. See [beta.3 release notes](BETA3_RELEASE.md) for release-specific limits and [beta delivery](BETA_DELIVERY.md) for artifact boundaries.
+
+## Beta.2 update
+
+Candidate: `0.10.0-beta.2` / versionCode 31. On 2026-10-11 the user confirmed Settings Bluetooth-detail artwork replacement on the phone. Earlier reports confirmed control/state updates in both system entries, Settings haptics, the status-bar icon and MiLink artwork replacement. Beta.2 includes genuine Miuix Compose Home / Device / About tabs, layout alignment changes, accepted-request haptics and five reviewed official artwork finishes. Java transport and system-control semantics remain the regression baseline.
+
+The Device page rows **选择 AZ100**, **耳机颜色** and **设备图片** still do not respond to taps. The previous explicit click handling did not pass the user's retest. Device selection, manual colour changes and image import remain inaccessible through those rows. Automatic colour detection is implemented and unit-tested but not separately accepted on the phone. The user requested that further repair stop for now; this session synchronizes records and source snapshots only.
+
+The supplied Audio Connect 5.0.1 (104) APK has been indexed and black, blue, gold, silver and violet artwork is bundled. Settings uses an identity-bound single large-header candidate with safe fallback; successful rendering does not establish exact resource IDs or every page reuse/write-back/restore case. MiLink replacement is user-confirmed but looks soft when the 176 x 130 official case image is enlarged; the source and scaling were retained.
+
+Local evidence remains 124 passing unit tests and Lint 0 errors / 60 warnings. Compose/integration tests were compiled, not executed through adb. The latest phone report is partial user acceptance; no new ROM/package versions, tested APK variant or hash were supplied. See [current handoff](CURRENT_SESSION_HANDOFF.md), [beta.2 release notes](BETA2_RELEASE.md) and [acceptance results](PUBLIC_BETA_ACCEPTANCE.md).
 
 ## Phase 1 update
 
 The user confirmed working Fusion Device Center and Bluetooth-detail visibility and off / ANC / ambient switching on 2026-09-27. The older statements below about unproven stock-button writes describe the August investigation, not the current baseline.
 
-Planned beta: `0.10.0-beta.1` / versionCode 30. The source now routes system control requests through the central Provider runtime, reports hook capabilities, reads state asynchronously and adds protective status-bar and artwork hooks. No fresh physical-device acceptance run or adb-backed beta log is available yet. See [public beta acceptance](PUBLIC_BETA_ACCEPTANCE.md).
+Historical beta.1: `0.10.0-beta.1` / versionCode 30. This stage centralized system control requests in the Provider runtime, capability reports and asynchronous snapshot reads. Later user reports confirmed the two system control/state paths and status-bar icon; official-app ownership and background recovery still need dedicated acceptance. See [public beta acceptance](PUBLIC_BETA_ACCEPTANCE.md).
 
 The device/ROM/firmware listed below remain the recorded hardware baseline. Historical user confirmation covers the inner Fusion route and off / ANC / ambient mode switching. The beta source now implements connection ownership, official-app session announcements and a device/settings UI; their hardware acceptance remains pending. Settings native ANC-strength levels are deliberately unavailable because their host encoding is unverified.
 
-## Historical August evidence
+## Recorded baseline and historical evidence
 
-## Baseline
-
-- Planned beta version: `0.10.0-beta.1` / `versionCode 30`
+- Current candidate: `0.10.0-beta.3` / `versionCode 32`; historical beta.2 code 31 and beta.1 code 30
 - Test device: Xiaomi `nezha`, Android 17, HyperOS `OS4.0.0.17.XPACNXM`
 - Earbuds: Technics EAH-AZ100, firmware `JNZ1ZE 1.040`
 - Official app used for captures: Technics Audio Connect 4.4.0
-- Latest route verification: `LSPosed_20260831_015717.zip`
+- Historical route log: `LSPosed_20260831_015717.zip`; latest rendering feedback is the user's 2026-10-11 report
 
 ## Compatibility evidence
 
 | Host | Evidence | Scope |
 |---|---|---|
 | Xiaomi `nezha`, Android 17, HyperOS `OS4.0.0.17.XPACNXM` | Recorded LSPosed route logs and user hardware confirmation | Fusion inner route, Settings mode path, AZ100 identity/battery/state |
-| `com.milink.service` `18.1.2.2.2608192125` / code `180010202` | `success_half_modules.log`, Surface process ready | Recorded Fusion controller/panel surface; beta untested |
-| `com.android.settings` `17` / code `37` | `success_half_modules.log`, Surface process ready | Recorded Settings host version; beta untested |
+| `com.milink.service` `18.1.2.2.2608192125` / code `180010202` | Historical host inventory; later user control/state and artwork reports | Recorded host version; latest package version not re-collected |
+| `com.android.settings` `17` / code `37` | Historical host inventory; user control/haptics reports and 2026-10-11 image success | Recorded host version; latest package version not re-collected |
 | `com.xiaomi.bluetooth` `17` / code `37` | `success_half_modules.log`, Surface process ready | Recorded runtime host version; beta untested |
-| `com.android.systemui` `17.03.260226.r` / code `202602260` | `success_half_modules.log`, Surface process ready | Recorded SystemUI version; new status rendering untested |
+| `com.android.systemui` `17.03.260226.r` / code `202602260` | Historical inventory; user confirmed status-bar icon | Basic rendering confirmed; multi-headset/startup cases not fully accepted |
 | `com.android.bluetooth`, `com.miui.home` | Exact package versions not established in the evidence quoted here | No package-version compatibility claim |
 | Other Android/HyperOS builds | No evidence in this repository | Unknown; protective no-op/fall-through expected |
 
@@ -62,8 +78,9 @@ The device/ROM/firmware listed below remain the recorded hardware baseline. Hist
   - replaces the ordinary Bluetooth display config in `MainCardView.k()`;
   - waits for the asynchronous `fc.t` controller and retries `fc.t.b0()` after card creation;
   - reaches `com.miui.circulateplus.world.headset.HeadsetDetailFragment`.
-- Status-bar callback discovery is exact for the recorded A2DP signature. Rendering, profile startup reconciliation and multi-headset behavior remain pending physical beta acceptance.
-- Artwork hook is limited to verified MiLink resource IDs and is not claimed for Settings product images.
+- Status-bar callback discovery is exact for the recorded A2DP signature and basic rendering is user-confirmed. Profile startup reconciliation and multi-headset behavior remain pending dedicated acceptance.
+- MiLink uses verified image IDs; Settings uses the identity-bound conservative large-header selector. Both image replacements are user-confirmed on the recorded phone, with further lifecycle/device-switch cases pending.
+- The protocol reads the AZ100 color after model confirmation and retains automatic finish selection. Manual override code exists, but the Device-page row is unresponsive; automatic colour is not separately accepted.
 
 The final route log contains:
 
@@ -77,13 +94,14 @@ Routed AZ100 MainCardView request to HeadsetContentController
 ## What Is Not Working Yet
 
 - The Fusion Device Center outer AZ100 tile does not show the blue phone-host marker. This is a separate device-host/status model from the inner panel route.
-- The supplied 2026-10-09 LSPosed log identified the Settings write gap. The beta forwards mode requests through the central runtime; its revised refresh/ownership path still needs physical acceptance.
-- Live state refresh inside every stock control/detail view is incomplete.
+- Device-page **选择 AZ100**, **耳机颜色** and **设备图片** remain unresponsive after the last attempted repair. Further repair is paused by user request.
+- Both current system entry control/state paths are user-confirmed. Pending/error presentation, official ownership and cancellation/lifecycle boundary cases still need dedicated tests.
+- MiLink artwork softness remains; the official case asset is only 176 x 130. No sharpening or alternate source was introduced.
 - Charging flags and offline/stale presentation require more ROM-specific validation.
 - Compatibility with other HyperOS builds, Android versions and AZ100 firmware versions is unknown.
 - Native Settings ANC-strength level encoding is unverified; the beta exposes no invented conversion or write path. This restriction supersedes v29 level-forwarding behavior and prevents a host slider value being treated as a verified AZ100 percentage.
-- Maintainer release signing and upload have not been performed. Optional signing environment variables and unsigned/minified test artifacts are available.
-- Exact AZ100 model-ID bytes are absent from the inspected captures; the current handshake checks success status only.
+- Maintainer release signing and local public packaging are complete; the GitHub Pre-release upload remains to be performed. Optional signing environment variables and unsigned/minified test artifacts remain available for reproducibility.
+- Official APK inspection establishes AZ100 model IDs `0x00A0..0x00A3` for the colour-read gate. This evidence does not imply that every general control-handshake path performs strict model-ID validation; see `OFFICIAL_COLOR_FINDINGS.md` and `CONTROL_TEST.md`.
 
 ## Fusion Route Investigation Summary
 
@@ -100,11 +118,13 @@ This fix intentionally leaves the original behavior for non-AZ100 devices and fo
 
 ## Next Acceptance Order
 
-1. Complete the fresh physical checks in `PUBLIC_BETA_ACCEPTANCE.md`, retaining capability records and module/build versions.
-2. Confirm automatic management, official-app ownership, cancel/reconnect and asynchronous mode refresh.
-3. Verify status-bar ownership with simultaneous AZ100 and unrelated headset profiles.
-4. Verify MiLink custom artwork and unchanged unsupported Settings imagery.
-5. Independently establish native Settings level encoding before enabling its writes, then sign and verify a maintainer release artifact.
+Further implementation is paused at the user's request. When work is resumed, preserve the current user-confirmed system paths and use these outstanding checks:
+
+1. Diagnose the three unresponsive Device-page rows; execute the Compose click cases and reproduce on the phone before declaring them fixed.
+2. Separately verify automatic colour, manual override/import after the rows work, and Settings/MiLink device switching, asynchronous host writes and original-image restoration.
+3. Confirm automatic management, official-app ownership, cancel/reconnect and status-bar ownership with simultaneous headsets.
+4. Complete remaining theme/font-scale/rotation/background/unknown-ROM cases from `PUBLIC_BETA_ACCEPTANCE.md`.
+5. Establish native Settings level encoding before enabling its writes; maintainer signing and public upload remain separate.
 
 ## Safety Rules
 
@@ -115,16 +135,16 @@ This fix intentionally leaves the original behavior for non-AZ100 devices and fo
 
 ## Build Verification
 
-The beta source was verified on 2026-10-09 with:
+The preceding beta.2 session compiled/ran these local checks (timestamps in the delivery manifest are UTC; the final package was created on 2026-10-11 in Asia/Shanghai):
 
 ```text
 :app:testDebugUnitTest
 :app:lintDebug
 :app:assembleDebug
 :app:assembleRelease
-:app:assembleDebugAndroidTest
+:app:compileDebugAndroidTestKotlin
 ```
 
 APK: `app/build/outputs/apk/debug/app-debug.apk`
 
-97 unit tests passed. Lint reports 0 errors and 36 warnings. Debug, minified unsigned Release and IPC test APKs build successfully; a minified test-signed Release candidate is packaged separately. Debug, test-signed Release and IPC APK signatures verify against the same local test certificate. No adb device was attached, so the 5 instrumentation cases, UI screenshots, hook rendering, background restrictions and upgrade/install acceptance are not executed. See `BETA_DELIVERY.md` for artifacts and remaining requirements.
+124 unit tests passed; Lint reports 0 errors and 60 warnings. Debug and minified Release built and local test signatures were checked. The instrumentation cases, including the added Device-row click case, were compiled but not run; the packaged test APK predates the new click case. The user reports partial physical acceptance and the unresolved clicks; no full checklist or adb-backed acceptance is claimed. This status-only sync does not rebuild or replace APKs. See `BETA_DELIVERY.md` for current artifact/source boundaries.

@@ -8,6 +8,7 @@ public class Az100ReadFramesTest {
     @Test
     public void reproducesCapturedReadRequests() {
         assertArrayEquals(ProtocolTestSupport.hex("055A02000000"), Az100ReadFrames.getModelId());
+        assertArrayEquals(ProtocolTestSupport.hex("055A02000200"), Az100ReadFrames.getDeviceColor());
         assertArrayEquals(ProtocolTestSupport.hex("055A0200000D"), Az100ReadFrames.getRelayDestinations());
         assertArrayEquals(ProtocolTestSupport.hex("055A02000A00"), Az100ReadFrames.getOutsideControl());
         assertArrayEquals(ProtocolTestSupport.hex("055A02002100"), Az100ReadFrames.getAmbientMode());

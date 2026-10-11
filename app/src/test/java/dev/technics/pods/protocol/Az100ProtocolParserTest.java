@@ -29,6 +29,15 @@ public class Az100ProtocolParserTest {
         assertEquals(Integer.valueOf(0), state.leAudioEnabled());
         assertEquals(Integer.valueOf(2), state.currentStatus());
         assertEquals("JNZ2ZA 01.00", state.cradleFirmwareVersion());
+        assertEquals(Az100DeviceColor.BLACK, state.deviceColor());
+    }
+
+    @Test
+    public void absentOrRejectedAllDataColorStaysUnknown() {
+        for (String response : new String[]{"055B0400F0000000", "055B0800F000000102000106"}) {
+            assertEquals(Az100DeviceColor.UNKNOWN, Az100AllDataParser.parse(
+                    RaceFrame.decode(ProtocolTestSupport.hex(response))).deviceColor());
+        }
     }
 
     @Test

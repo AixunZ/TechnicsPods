@@ -56,7 +56,8 @@ public final class HookEntry extends XposedModule {
                             () -> getRemotePreferences(CaptureContract.PREFS_NAME)).install();
                 }
                 new Az100HyperOsBridgeHook(this, param.getPackageName(), param.getClassLoader()).install();
-                new Az100ArtHook(this, param.getPackageName(), param.getClassLoader()).install();
+                new Az100ArtHook(this, param.getPackageName(), param.getClassLoader(),
+                        getRemotePreferences(CaptureContract.PREFS_NAME).getBoolean(ModulePreferences.DIAGNOSTICS, false)).install();
                 if (CaptureContract.MILINK_SERVICE_PACKAGE.equals(param.getPackageName())) {
                     new Az100FusionDeviceRouteHook(this, param.getClassLoader(),
                             getRemotePreferences(CaptureContract.PREFS_NAME).getBoolean(ModulePreferences.DIAGNOSTICS, false)).install();

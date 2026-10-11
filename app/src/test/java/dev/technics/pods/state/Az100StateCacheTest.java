@@ -6,6 +6,7 @@ import java.util.List;
 
 import dev.technics.pods.diagnostic.Az100DiagnosticResult;
 import dev.technics.pods.diagnostic.Az100OutsideControlResult;
+import dev.technics.pods.protocol.Az100DeviceColor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -173,6 +174,22 @@ public class Az100StateCacheTest {
         assertEquals(100L, state.controls().outsideModeUpdatedAtMillis());
         assertEquals(500L, state.controls().ambientLevelUpdatedAtMillis());
         assertEquals(500L, state.controls().updatedAtMillis());
+    }
+
+    @Test public void unknownColorDoesNotEraseLastConfirmedColor() {
+        Az100DiagnosticResult black = new Az100DiagnosticResult(
+                0L, null, null, null, null, null, null, null, null, null,
+                null, null, List.of(), Az100DeviceColor.BLACK);
+        Az100DiagnosticResult unknown = new Az100DiagnosticResult(
+                0L, null, null, null, null, null, null, null, null, null,
+                null, null, List.of("耳机配色"));
+        Az100StateCache.State state = Az100StateCache.sampleSucceeded(
+                Az100StateCache.State.empty(), black, 100L);
+        assertEquals(Az100DeviceColor.BLACK, state.deviceColor());
+        assertEquals(100L, state.deviceColorUpdatedAtMillis());
+        state = Az100StateCache.sampleSucceeded(state, unknown, 200L);
+        assertEquals(Az100DeviceColor.BLACK, state.deviceColor());
+        assertEquals(100L, state.deviceColorUpdatedAtMillis());
     }
 
     @Test public void invalidOrMismatchedResultCannotBePublished() {

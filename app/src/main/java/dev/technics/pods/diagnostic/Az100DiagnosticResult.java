@@ -2,6 +2,8 @@ package dev.technics.pods.diagnostic;
 
 import java.util.List;
 
+import dev.technics.pods.protocol.Az100DeviceColor;
+
 public record Az100DiagnosticResult(
         long elapsedMillis,
         Integer leftBatteryPercent,
@@ -15,10 +17,25 @@ public record Az100DiagnosticResult(
         Boolean partnerAvailable,
         String leftFirmware,
         String rightFirmware,
-        List<String> warnings
+        List<String> warnings,
+        Az100DeviceColor deviceColor
 ) {
+    public Az100DiagnosticResult(long elapsedMillis, Integer leftBatteryPercent,
+                                  Integer rightBatteryPercent, Integer cradleBatteryPercent,
+                                  Integer outsideControlMode, Integer noiseCancellingLevel,
+                                  Integer ambientLevel, Integer ambientMode,
+                                  Boolean adaptiveAncEnabled, Boolean partnerAvailable,
+                                  String leftFirmware, String rightFirmware,
+                                  List<String> warnings) {
+        this(elapsedMillis, leftBatteryPercent, rightBatteryPercent, cradleBatteryPercent,
+                outsideControlMode, noiseCancellingLevel, ambientLevel, ambientMode,
+                adaptiveAncEnabled, partnerAvailable, leftFirmware, rightFirmware, warnings,
+                Az100DeviceColor.UNKNOWN);
+    }
+
     public Az100DiagnosticResult {
         warnings = List.copyOf(warnings);
+        deviceColor = deviceColor == null ? Az100DeviceColor.UNKNOWN : deviceColor;
     }
 
     public String toDisplayText() {
@@ -34,7 +51,9 @@ public record Az100DiagnosticResult(
         text.append("自适应降噪: ").append(booleanValue(adaptiveAncEnabled)).append('\n');
         text.append("另一只耳机: ").append(booleanValue(partnerAvailable)).append('\n');
         text.append("左耳固件: ").append(textValue(leftFirmware)).append('\n');
-        text.append("右耳固件: ").append(textValue(rightFirmware));
+        text.append("右耳固件: ").append(textValue(rightFirmware)).append('\n');
+        text.append("耳机配色: ").append(deviceColor == Az100DeviceColor.UNKNOWN
+                ? "未识别" : deviceColor.artKey());
         if (!warnings.isEmpty()) {
             text.append("\n未完成项目: ").append(String.join("、", warnings));
         }

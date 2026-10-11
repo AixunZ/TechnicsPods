@@ -2,6 +2,7 @@ package dev.technics.pods.state;
 
 import dev.technics.pods.diagnostic.Az100DiagnosticResult;
 import dev.technics.pods.diagnostic.Az100OutsideControlResult;
+import dev.technics.pods.protocol.Az100DeviceColor;
 
 /** Pure state transitions for live samples and last-known AZ100 values. */
 public final class Az100StateCache {
@@ -51,8 +52,26 @@ public final class Az100StateCache {
             long lastAttemptAtMillis,
             long lastSuccessAtMillis,
             String lastError,
-            String incompleteFields
+            String incompleteFields,
+            Az100DeviceColor deviceColor,
+            long deviceColorUpdatedAtMillis
     ) {
+        /** Source compatibility for callers that predate color telemetry. */
+        public State(Earbud left, Earbud right, Integer cradleBatteryPercent,
+                long cradleUpdatedAtMillis, Controls controls, Boolean partnerAvailable,
+                long partnerUpdatedAtMillis, boolean monitoring, boolean sampling,
+                boolean reachable, int consecutiveFailures, long lastAttemptAtMillis,
+                long lastSuccessAtMillis, String lastError, String incompleteFields) {
+            this(left, right, cradleBatteryPercent, cradleUpdatedAtMillis, controls,
+                    partnerAvailable, partnerUpdatedAtMillis, monitoring, sampling, reachable,
+                    consecutiveFailures, lastAttemptAtMillis, lastSuccessAtMillis, lastError,
+                    incompleteFields, Az100DeviceColor.UNKNOWN, 0L);
+        }
+
+        public State {
+            deviceColor = deviceColor == null ? Az100DeviceColor.UNKNOWN : deviceColor;
+        }
+
         public static State empty() {
             Earbud emptyEarbud = new Earbud(null, 0L, null, 0L);
             Controls emptyControls = new Controls(null, null, null, null, null, 0L);
@@ -71,7 +90,9 @@ public final class Az100StateCache {
                     0L,
                     0L,
                     null,
-                    null
+                    null,
+                    Az100DeviceColor.UNKNOWN,
+                    0L
             );
         }
     }
@@ -125,6 +146,12 @@ public final class Az100StateCache {
         long partnerAt = result.partnerAvailable() == null
                 ? previous.partnerUpdatedAtMillis()
                 : nowMillis;
+        Az100DeviceColor color = result.deviceColor() == null
+                || result.deviceColor() == Az100DeviceColor.UNKNOWN
+                ? previous.deviceColor() : result.deviceColor();
+        long colorAt = result.deviceColor() == null
+                || result.deviceColor() == Az100DeviceColor.UNKNOWN
+                ? previous.deviceColorUpdatedAtMillis() : nowMillis;
         String incomplete = result.warnings().isEmpty()
                 ? null
                 : String.join("、", result.warnings());
@@ -144,7 +171,9 @@ public final class Az100StateCache {
                 previous.lastAttemptAtMillis(),
                 nowMillis,
                 controlsNewer ? previous.lastError() : null,
-                incomplete
+                incomplete,
+                color,
+                colorAt
         );
     }
 
@@ -204,7 +233,9 @@ public final class Az100StateCache {
                 previous.lastAttemptAtMillis(),
                 previous.lastSuccessAtMillis(),
                 null,
-                null
+                null,
+                previous.deviceColor(),
+                previous.deviceColorUpdatedAtMillis()
         );
     }
 
@@ -216,7 +247,8 @@ public final class Az100StateCache {
                 previous.partnerAvailable(), previous.partnerUpdatedAtMillis(),
                 previous.monitoring(), previous.sampling(), previous.reachable(),
                 previous.consecutiveFailures(), previous.lastAttemptAtMillis(),
-                previous.lastSuccessAtMillis(), error, previous.incompleteFields());
+                previous.lastSuccessAtMillis(), error, previous.incompleteFields(),
+                previous.deviceColor(), previous.deviceColorUpdatedAtMillis());
     }
 
     public static State monitoringStopped(State previous) {
@@ -312,7 +344,9 @@ public final class Az100StateCache {
                 attemptAt,
                 successAt,
                 error,
-                incomplete
+                incomplete,
+                previous.deviceColor(),
+                previous.deviceColorUpdatedAtMillis()
         );
     }
 }

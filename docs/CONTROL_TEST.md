@@ -1,6 +1,10 @@
 # AZ100 guarded control
 
-Version `0.10.0-beta.1` routes diagnostic and system writes through the same module-process runtime. The homepage has no daily controls. Advanced diagnostics exposes off / ANC / ambient commands and the verified AZ100 `1..100` noise level. The old separate fixed-75 round-trip client has been removed.
+The shared module-process write runtime was introduced in `0.10.0-beta.1` and is retained in the current `0.10.0-beta.2`. The homepage has no daily controls. Advanced diagnostics exposes off / ANC / ambient commands and the verified AZ100 `1..100` noise level. The old separate fixed-75 round-trip client has been removed.
+
+## Current device feedback — 2026-10-11
+
+The user has confirmed mode control and state updates in both system entry points, Settings haptic feedback, the status-bar headset icon, and now Settings Bluetooth detail artwork replacement. MiLink/control-center artwork also replaces, with source-resolution softness remaining. The module's device-page **选择 AZ100**, **耳机颜色** and **设备图片** rows still do nothing when tapped; the attempted click fix did not pass the user's device retest. Further repair is paused at the user's request. This feedback does not complete the broader coexistence, multi-device and lifecycle acceptance matrix.
 
 ## Transaction
 
@@ -23,6 +27,6 @@ Test official coexistence separately: open the official app during a module tran
 
 ## System surface limits
 
-Settings and MiLink mode requests use the same Provider/runtime transaction. Native Settings ANC-strength encoding is not established, so its level writes are unavailable in this beta. AZ100's protocol percentage is established; that does not establish the host slider encoding. Settings image replacement also awaits a confirmed view/resource ID.
+Settings and MiLink mode requests use the same Provider/runtime transaction. Native Settings ANC-strength encoding is not established, so its level writes are unavailable in this beta. AZ100's protocol percentage is established; that does not establish the host slider encoding. Settings image replacement now uses selected-device identity and a conservative single-header candidate, and has been confirmed on the user's current ROM. A stable Settings resource ID and the full image lifecycle matrix remain unverified; see [artwork-beta2.md](artwork-beta2.md).
 
-The model-handshake parser currently checks response type, command and success status. No inspected capture establishes AZ100's exact model-ID bytes, so strict model-ID validation is a remaining acceptance prerequisite. Address selection, name discovery and the exact RFCOMM UUID reduce accidental targeting but are not a substitute for that missing evidence.
+The general control model-handshake currently checks response type, command and success status. The official APK now establishes AZ100 family IDs `0x00A0..0x00A3`; the read-only color path checks those IDs before querying color. Strict model-ID enforcement for every control transaction remains an implementation/acceptance gap. Address selection, name discovery and the exact RFCOMM UUID reduce accidental targeting but are not a substitute for that validation. See [OFFICIAL_COLOR_FINDINGS.md](OFFICIAL_COLOR_FINDINGS.md) for the APK evidence.

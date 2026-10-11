@@ -25,6 +25,7 @@ public final class Az100AllDataParser {
         Integer leAudio = null;
         Integer currentStatus = null;
         String cradleVersion = null;
+        Az100DeviceColor deviceColor = Az100DeviceColor.UNKNOWN;
 
         int itemCount = RaceFrame.unsigned(payload[1]);
         int cursor = 2;
@@ -43,6 +44,10 @@ public final class Az100AllDataParser {
             boolean success = length > 0 && RaceFrame.unsigned(payload[cursor]) == 0;
             if (success) {
                 switch (commandId) {
+                    case PanasonicCommand.GET_DEVICE_COLOR -> {
+                        requireLength(length, 2, commandId);
+                        deviceColor = Az100DeviceColor.fromCode(RaceFrame.unsigned(payload[cursor + 1]));
+                    }
                     case PanasonicCommand.GET_OUTSIDE_CONTROL -> {
                         requireLength(length, 4, commandId);
                         outsideMode = RaceFrame.unsigned(payload[cursor + 1]);
@@ -89,7 +94,8 @@ public final class Az100AllDataParser {
                 cradleBattery,
                 leAudio,
                 currentStatus,
-                cradleVersion
+                cradleVersion,
+                deviceColor
         );
     }
 

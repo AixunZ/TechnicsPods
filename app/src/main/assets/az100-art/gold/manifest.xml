@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<az100-art schema="1" model="EAH-AZ100" source="bundled" verified="true"
+    package="com.panasonic.technicsaudiaconnect" color="gold" sourceVersion="5.0.1" sourceVersionCode="104"
+    signatureSha256="d28328e677f11ea0d4a77f421fbd55dee2a9c1298a640acfd3e6abbea4027138" deviceAddress="">
+    <slot name="main" resource="drawable/az100_gld_c" resourceSha256="a009bd98f2bed43311da4887aad8fda8980139b3d3503a6ed50dadaf48e70ca2" file="main.webp" sha256="a009bd98f2bed43311da4887aad8fda8980139b3d3503a6ed50dadaf48e70ca2" width="176" height="130" />
+    <slot name="left" resource="drawable/az100_gld_l" resourceSha256="205d38158cac0bc07f0773566f9681b63a06065c936d2eeed59718445805737d" file="left.webp" sha256="205d38158cac0bc07f0773566f9681b63a06065c936d2eeed59718445805737d" width="274" height="284" />
+    <slot name="right" resource="drawable/az100_gld_r" resourceSha256="aae2e8c7359ee97d956037929757fc94a70cda4fe4301c5dd872c749f2813565" file="right.webp" sha256="aae2e8c7359ee97d956037929757fc94a70cda4fe4301c5dd872c749f2813565" width="274" height="284" />
+    <slot name="case" resource="drawable/az100_gld_c" resourceSha256="a009bd98f2bed43311da4887aad8fda8980139b3d3503a6ed50dadaf48e70ca2" file="case.webp" sha256="a009bd98f2bed43311da4887aad8fda8980139b3d3503a6ed50dadaf48e70ca2" width="176" height="130" />
+</az100-art>

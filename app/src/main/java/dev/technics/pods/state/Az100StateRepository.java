@@ -7,6 +7,11 @@ import android.content.SharedPreferences;
 
 import dev.technics.pods.diagnostic.Az100DiagnosticResult;
 import dev.technics.pods.diagnostic.Az100OutsideControlResult;
+import dev.technics.pods.ModulePreferences;
+import dev.technics.pods.art.Az100ArtStore;
+import dev.technics.pods.protocol.Az100DeviceColor;
+import dev.technics.pods.protocol.Az100DeviceColor;
+import dev.technics.pods.art.Az100ArtProvider;
 
 /** Persists the latest state so UI and future system integrations share one source of truth. */
 public final class Az100StateRepository {
@@ -15,10 +20,12 @@ public final class Az100StateRepository {
     private static final Object LOCK = new Object();
     private final ContentResolver resolver;
     private final SharedPreferences preferences;
+    private final Context context;
 
     public Az100StateRepository(Context context) {
-        resolver = context.getApplicationContext().getContentResolver();
-        preferences = context.getApplicationContext()
+        this.context = context.getApplicationContext();
+        resolver = this.context.getContentResolver();
+        preferences = this.context
                 .getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
@@ -27,8 +34,16 @@ public final class Az100StateRepository {
     }
 
     private void update(UnaryOperator<Az100StateCache.State> transition) {
-        synchronized (LOCK) { save(transition.apply(load())); }
+        boolean colorChanged;
+        synchronized (LOCK) {
+            Az100StateCache.State before = load();
+            Az100StateCache.State after = transition.apply(before);
+            colorChanged = before.deviceColor() != after.deviceColor()
+                    || before.deviceColorUpdatedAtMillis() != after.deviceColorUpdatedAtMillis();
+            save(after);
+        }
         resolver.notifyChange(Az100StateProvider.STATE_URI, null);
+        if (colorChanged) resolver.notifyChange(Az100ArtProvider.ART_URI, null);
     }
 
     public void monitoringStarted() { update(Az100StateCache::monitoringStarted); }
@@ -37,6 +52,16 @@ public final class Az100StateRepository {
     }
     public void sampleSucceeded(Az100DiagnosticResult result, long startedAt, long nowMillis) {
         update(state -> Az100StateCache.sampleSucceeded(state, result, startedAt, nowMillis));
+        Az100DeviceColor color = result == null ? Az100DeviceColor.UNKNOWN : result.deviceColor();
+        String override = ModulePreferences.get(context).getString(ModulePreferences.ART_COLOR_OVERRIDE, "");
+        if (override == null || override.isBlank()) {
+            String key = color == null ? "" : color.artKey();
+            if (!key.isBlank()) {
+                ModulePreferences.get(context).edit().putString(ModulePreferences.ART_COLOR_AUTO, key).apply();
+                try { Az100ArtStore.selectBundledColor(context, key); }
+                catch (java.io.IOException ignored) { /* Keep the last confirmed artwork set. */ }
+            }
+        }
     }
     public void sampleFailed(String error, long startedAt, long nowMillis) {
         update(state -> Az100StateCache.sampleFailed(state, error, startedAt, nowMillis));
@@ -90,7 +115,9 @@ public final class Az100StateRepository {
                 preferences.getLong("last_attempt_at", 0L),
                 preferences.getLong("last_success_at", 0L),
                 nullableString("last_error"),
-                nullableString("incomplete_fields")
+                nullableString("incomplete_fields"),
+                Az100DeviceColor.fromCode(preferences.getInt("device_color_code", -1)),
+                preferences.getLong("device_color_at", 0L)
         );
     }
 
@@ -127,6 +154,8 @@ public final class Az100StateRepository {
         editor.putLong("last_success_at", state.lastSuccessAtMillis());
         putNullableString(editor, "last_error", state.lastError());
         putNullableString(editor, "incomplete_fields", state.incompleteFields());
+        editor.putInt("device_color_code", state.deviceColor().code());
+        editor.putLong("device_color_at", state.deviceColorUpdatedAtMillis());
         editor.apply();
     }
 

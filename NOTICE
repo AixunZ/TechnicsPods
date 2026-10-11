@@ -14,3 +14,21 @@ Architecture and implementation techniques were studied from these GPL-3.0 proje
 
 Technics, Panasonic, EAH-AZ100, Xiaomi and HyperOS are trademarks of their
 respective owners. This project is not affiliated with or endorsed by them.
+
+UI library: Miuix KMP 0.9.2, copyright compose-miuix-ui contributors,
+licensed under the Apache License, Version 2.0:
+https://github.com/compose-miuix-ui/miuix
+https://github.com/compose-miuix-ui/miuix/blob/main/LICENSE
+
+AZ100 artwork in 0.10.0-beta.2: bundled black, blue, gold, silver and violet
+AZ100 case and left/right earbud images were extracted from Technics Audio
+Connect 5.0.1 (versionCode 104), package
+com.panasonic.technicsaudioconnect. APK SHA-256:
+ce789cb9460cd10a9b140dd3ca8e82908986165b9a5a192e3a657e448cb5bd63.
+Signer SHA-256:
+d28328e677f11ea0d4a77f421fbd55dee2a9c1298a640acfd3e6abbea4027138.
+The resource identities and hashes are recorded in each color manifest under
+app/src/main/assets/az100-art/{black,blue,gold,silver,violet}/ and in
+tools/official-az100-color-index.xml. Official images remain third-party
+assets; the project's GPL code license does not grant rights to
+Panasonic/Technics imagery.

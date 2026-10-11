@@ -12,6 +12,22 @@ public final class Az100ReadResponses {
         successfulResponse(frame, PanasonicCommand.GET_MODEL_ID, 1);
     }
 
+    /** The official model callback reads two little-endian bytes after the response status. */
+    public static int modelId(RaceFrame frame) {
+        byte[] payload = successfulResponse(frame, PanasonicCommand.GET_MODEL_ID, 3);
+        return RaceFrame.unsigned(payload[1]) | (RaceFrame.unsigned(payload[2]) << 8);
+    }
+
+    public static boolean isAz100ModelId(int modelId) {
+        // Audio Connect DeviceMmiConstants: AZ100, AZ100E, AZ100G and AZ100P.
+        return modelId >= 0x00A0 && modelId <= 0x00A3;
+    }
+
+    public static Az100DeviceColor deviceColor(RaceFrame frame) {
+        byte[] payload = successfulResponse(frame, PanasonicCommand.GET_DEVICE_COLOR, 2);
+        return Az100DeviceColor.fromCode(RaceFrame.unsigned(payload[1]));
+    }
+
     public static int cradleBattery(RaceFrame frame) {
         byte[] payload = successfulResponse(frame, PanasonicCommand.GET_CRADLE_BATTERY, 2);
         int percent = RaceFrame.unsigned(payload[1]);

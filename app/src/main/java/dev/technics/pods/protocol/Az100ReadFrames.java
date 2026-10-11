@@ -8,6 +8,10 @@ public final class Az100ReadFrames {
         return query(PanasonicCommand.GET_MODEL_ID, new byte[0]);
     }
 
+    public static byte[] getDeviceColor() {
+        return query(PanasonicCommand.GET_DEVICE_COLOR, new byte[0]);
+    }
+
     public static byte[] getRelayDestinations() {
         return query(PanasonicCommand.RELAY_GET_AVAILABLE_DESTINATION, new byte[0]);
     }

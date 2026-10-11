@@ -2,6 +2,41 @@
 
 This file records implementation milestones and hardware verification notes. It is intentionally separate from the long-form evidence in `docs/PROJECT_STATUS.md`.
 
+## 0.10.0-beta.3 - First public test release (2026-10-11, versionCode 32)
+
+### Release preparation
+
+- Bumped the application to `0.10.0-beta.3` / `versionCode 32` for the first public test release.
+- The About page now identifies the developer as **AixunZ**.
+- GitHub distribution is defined as a **Pre-release**. Public assets are the maintainer-signed `TechnicsPods-0.10.0-beta.3-release.apk`, the matching source archive, mapping file, SHA-256 checksums and delivery manifest.
+- Local public packaging completed with 124 unit tests, 0 lint errors/60 warnings, verified maintainer certificate `97598098835abf3b86d18b028333a3c06d575fd7a0f5e14e2a4d438b5b13292d`, and release APK SHA-256 `c6257b7105a594d5d1814715bc41594089b0938814b8a37d2c93a3a065051986`. GitHub upload remains a separate publishing step; no private keystore or password is stored in this repository.
+
+### Known beta limits
+
+- The Device-page rows **选择 AZ100**, **耳机颜色** and **设备图片** still do not respond to taps. Device selection, manual colour changes and image import therefore remain inaccessible through the app UI, and repair is paused for this beta.
+- No adb device was available for this release workflow. Instrumentation execution and complete physical acceptance are not claimed; the reported system control/state, haptic, status-bar and artwork results remain partial user acceptance on the recorded phone.
+- The README records the maintainer's GPT development-credit estimate and the participating model families; it is not an independently audited usage report.
+
+## 0.10.0-beta.2 - Test Candidate (2026-10-10, versionCode 31)
+
+### Device follow-up (2026-10-11)
+
+- User confirmed Settings Bluetooth-detail artwork replacement succeeds. Previous user reports also confirmed both system entries' control/state updates, Settings haptics, the status icon and MiLink artwork replacement.
+- Device-page **选择 AZ100**, **耳机颜色** and **设备图片** still do not respond. The attempted explicit single-click handling is retained in source, but is not a verified fix. Further repair is paused at the user's request; this update records status only.
+- Bundled black, blue, gold, silver and violet official resource sets and added the official model/colour read path, automatic selection and manual override code. Automatic colour has not been separately accepted; manual actions remain blocked by the row failure.
+- Added a conservative Settings header selector inside the AZ100 fragment, with identity, size/uniqueness, asynchronous decoding, host-write guards and original restoration. Exact per-ROM image IDs remain unverified despite successful rendering.
+- Home-card alignment, long-name handling, fixed battery image slots and device information background cards were implemented; detailed visual/font-scale/lifecycle acceptance remains separate.
+- Local results: 124 unit tests pass; Lint 0 errors and 60 warnings. Compose click cases compile but were not executed; the user's failed click result takes precedence over earlier repair claims. MiLink softness from the small official case asset is retained.
+
+### Initial candidate implementation
+
+- Replaced the long XML homepage with genuine Miuix Compose Home / Device / About tabs and system/light/dark appearance. Daily controls remain in system pages; advanced diagnostics remain separate.
+- Added one immutable, lifecycle-aware UI state owner for backend, preference, permission and artwork updates.
+- Added versioned, slot-aware artwork mappings and structured import errors. The initial black AZ100 set was expanded to five reviewed finishes from Technics Audio Connect 5.0.1 with source and digest provenance.
+- Initially added diagnostic-only Settings product-view discovery, subsequently extended to the conservative identity-bound header selector described above.
+- Added one Settings click haptic per accepted request, deduplicated by request ID and guarded by device, view and runtime generations. Global system haptic settings remain authoritative.
+- Preserved the beta.1 user-confirmed control/state-update paths and status-bar icon as the regression baseline. Official-resource extraction is complete; beta.2 has partial user acceptance and the three unresolved Device-page entry failures.
+
 ## 0.10.0-beta.1 - Test Candidate (2026-10-09, versionCode 30)
 
 - Added exact A2DP connection-state discovery for the `wireless_headset` status slot, multi-profile/address tracking, startup reconciliation and safe unknown-ROM no-op behavior.
@@ -16,7 +51,7 @@ This file records implementation milestones and hardware verification notes. It 
 - Preserved diagnostic results across Activity recreation, queued image-selector results, and moved document export to a background worker.
 - Added verified MiLink artwork replacement for known AZ100 image IDs.
 - Restricted Settings ANC-strength level handling until native host encoding is verified; no ratio or token mapping is claimed.
-- Debug/test-signed APK and release-signed APK are separate artifacts. Maintainer release signing/upload remains pending.
+- Debug/test-signed APK and release-signed APK are separate artifacts. The beta.3 maintainer-signed package is complete; GitHub upload remains pending.
 - This beta has not been connected to adb or physically accepted in this session; prior hardware evidence applies only to the recorded baseline.
 
 ## 0.9.15 - Unreleased (2026-10-09)

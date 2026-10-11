@@ -3,6 +3,8 @@ package dev.technics.pods.protocol;
 /** Command identifiers observed on EAH-AZ100 firmware JNZ1ZE 1.040. */
 public final class PanasonicCommand {
     public static final int GET_MODEL_ID = 0x0000;
+    /** Read-only color query confirmed by Audio Connect 5.0.1 and the idle-state capture. */
+    public static final int GET_DEVICE_COLOR = 0x0002;
     public static final int GET_OUTSIDE_CONTROL = 0x000A;
     public static final int SET_OUTSIDE_CONTROL = 0x000B;
     public static final int GET_AMBIENT_MODE = 0x0021;

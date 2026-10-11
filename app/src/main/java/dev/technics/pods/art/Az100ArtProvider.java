@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
 
 import dev.technics.pods.capture.CaptureContract;
 
@@ -25,7 +27,8 @@ public final class Az100ArtProvider extends ContentProvider {
             CaptureContract.XIAOMI_BLUETOOTH_PACKAGE
     );
     private long cachedVersion = -1;
-    private byte[] cachedImage;
+    private final Map<String, byte[]> cachedImages = new HashMap<>();
+    private String cachedSelection = "";
 
     @Override public boolean onCreate() { return true; }
 
@@ -37,7 +40,7 @@ public final class Az100ArtProvider extends ContentProvider {
         }
         final android.content.Context context = getContext();
         try {
-            final byte[] bytes = cachedImage(context);
+            final byte[] bytes = cachedImage(context, Az100ArtPolicy.slot(uri.getQuery()));
             if (bytes == null) throw new FileNotFoundException("No AZ100 artwork");
             return openPipeHelper(uri, "image/png", null, bytes, (output, targetUri, mime, options, image) -> {
                 try (OutputStream stream = new ParcelFileDescriptor.AutoCloseOutputStream(output)) {
@@ -49,14 +52,23 @@ public final class Az100ArtProvider extends ContentProvider {
         }
     }
 
-    private synchronized byte[] cachedImage(android.content.Context context) throws IOException {
+    private synchronized byte[] cachedImage(android.content.Context context, String slot) throws IOException {
         if (context == null) return null;
         long version = Az100ArtStore.version(context);
-        if (cachedVersion != version) {
-            cachedImage = Az100ArtStore.encodedImage(context);
+        String selection = dev.technics.pods.ModulePreferences.get(context).getString(
+                dev.technics.pods.ModulePreferences.SELECTED_ADDRESS, "");
+        if (cachedVersion != version || !java.util.Objects.equals(cachedSelection, selection)) {
+            cachedImages.clear();
             cachedVersion = version;
+            cachedSelection = selection;
         }
-        return cachedImage;
+        if (!cachedImages.containsKey(slot)) cachedImages.put(slot, Az100ArtStore.encodedImage(context, slot));
+        return cachedImages.get(slot);
+    }
+
+    public static Uri slotUri(String slot) {
+        if (!Az100ArtPolicy.validSlot(slot)) throw new IllegalArgumentException("Invalid artwork slot");
+        return ART_URI.buildUpon().appendQueryParameter("slot", slot).build();
     }
 
     private boolean authorizedCaller() {
@@ -73,7 +85,10 @@ public final class Az100ArtProvider extends ContentProvider {
 
     @Override public Cursor query(Uri uri, String[] projection, String selection,
             String[] selectionArgs, String sortOrder) { return null; }
-    @Override public String getType(Uri uri) { return "image/png"; }
+    @Override public String getType(Uri uri) {
+        return uri != null && Az100ArtPolicy.readableUri(uri.getScheme(), uri.getAuthority(), uri.getPath(),
+                uri.getQuery(), uri.getFragment(), "r") ? "image/png" : null;
+    }
     @Override public Uri insert(Uri uri, ContentValues values) { return null; }
     @Override public int delete(Uri uri, String selection, String[] selectionArgs) { return 0; }
     @Override public int update(Uri uri, ContentValues values, String selection,

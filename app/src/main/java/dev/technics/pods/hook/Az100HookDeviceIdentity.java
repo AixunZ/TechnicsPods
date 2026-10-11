@@ -18,6 +18,14 @@ import io.github.libxposed.api.XposedModule;
 
 /** Cached selected-device guard. Hook getter paths never read remote preferences. */
 final class Az100HookDeviceIdentity {
+    private static final Set<String> IDENTITY_MODEL_TYPES = Set.of(
+            "com.miui.headset.api.HeadsetInfo",
+            "com.miui.circulate.api.service.CirculateDeviceInfo",
+            "com.miui.circulate.api.service.CirculateServiceInfo");
+    private static final String[] NESTED_IDENTITY_GETTERS = {
+            "getBluetoothDevice", "getDevice", "getAttachedDeviceInfo",
+            "getHeadsetDeviceInfo", "getHeadsetInfo", "getServiceInfo", "getDeviceInfo"
+    };
     private record Selection(String address, long revision) {}
     private volatile Selection selection = new Selection("", 0L);
     private final SharedPreferences preferences;
@@ -123,10 +131,21 @@ final class Az100HookDeviceIdentity {
         String name = property(owner, new String[]{"getName", "getDeviceName", "getDevicesName", "getDeviceModel", "getServiceId"},
                 new String[]{"name", "deviceName", "devicesName", "serviceId"});
         for (String value : new String[]{
-                property(owner, new String[]{"getAddress"}, new String[]{"address"}),
+                property(owner, new String[]{"getAddress"}, new String[]{"address", "mAddress"}),
                 property(owner, new String[]{"getBtMac", "getDeviceMac", "getDevicesMac"}, new String[]{"btMac", "deviceMac", "devicesMac"}),
                 property(owner, new String[]{"getMac", "getDeviceAddress"}, new String[]{"mac", "deviceAddress"})}) {
             add(addresses, value, matches(value, name));
+        }
+        // Public, side-effect-free model getters survive field obfuscation.  Only
+        // explicit identity accessors are followed; managers and Context graphs are
+        // never traversed.  Conflicting addresses remain rejected by targetAddress().
+        for (String getter : NESTED_IDENTITY_GETTERS) {
+            try {
+                Method method = owner.getClass().getMethod(getter);
+                if (method.getParameterCount() == 0 && !Modifier.isStatic(method.getModifiers())) {
+                    collect(method.invoke(owner), depth + 1, seen, addresses);
+                }
+            } catch (Throwable ignored) {}
         }
         for (Class<?> type = owner.getClass(); type != null && type != Object.class
                 && !"android.view.View".equals(type.getName()); type = type.getSuperclass()) {
@@ -134,6 +153,7 @@ final class Az100HookDeviceIdentity {
                 if (Modifier.isStatic(field.getModifiers())) continue;
                 String fieldName = field.getName().toLowerCase(Locale.ROOT);
                 if (!BluetoothDevice.class.isAssignableFrom(field.getType())
+                        && !IDENTITY_MODEL_TYPES.contains(field.getType().getName())
                         && !fieldName.contains("device") && !fieldName.contains("headsetinfo")) continue;
                 try { field.setAccessible(true); collect(field.get(owner), depth + 1, seen, addresses); }
                 catch (Throwable ignored) {}

@@ -24,6 +24,7 @@ import java.util.concurrent.TimeoutException;
 
 import dev.technics.pods.protocol.Az100BatteryUpdate;
 import dev.technics.pods.protocol.Az100ControlResponses;
+import dev.technics.pods.protocol.Az100DeviceColor;
 import dev.technics.pods.protocol.Az100ReadFrames;
 import dev.technics.pods.protocol.Az100ReadResponses;
 import dev.technics.pods.protocol.Az100RelayState;
@@ -89,6 +90,7 @@ public final class Az100ReadOnlyClient {
             Boolean adaptiveAnc = null;
             String leftFirmware = null;
             String rightFirmware = null;
+            Az100DeviceColor deviceColor = Az100DeviceColor.UNKNOWN;
 
             try {
                 RaceFrame relay = session.exchange(
@@ -162,6 +164,20 @@ public final class Az100ReadOnlyClient {
                 warnings.add("右耳固件");
             }
 
+            try {
+                if (Az100ReadResponses.isAz100ModelId(Az100ReadResponses.modelId(model))) {
+                    deviceColor = Az100ReadResponses.deviceColor(session.exchange(
+                            Az100ReadFrames.getDeviceColor(),
+                            frame -> isResponse(frame, PanasonicCommand.GET_DEVICE_COLOR)
+                    ));
+                    if (deviceColor == Az100DeviceColor.UNKNOWN) warnings.add("耳机配色未识别");
+                } else {
+                    warnings.add("耳机配色：型号未确认");
+                }
+            } catch (TimeoutException | IllegalArgumentException error) {
+                warnings.add("耳机配色");
+            }
+
             deadline.complete();
             return new Az100DiagnosticResult(
                     SystemClock.elapsedRealtime() - started,
@@ -176,7 +192,8 @@ public final class Az100ReadOnlyClient {
                     partnerAvailable,
                     leftFirmware,
                     rightFirmware,
-                    warnings
+                    warnings,
+                    deviceColor
             );
         } catch (DiagnosticException error) {
             throw error;

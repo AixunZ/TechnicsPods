@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">TechnicsPods</string>
-    <string name="app_description">EAH-AZ100 read-only state and HyperOS integration module</string>
+    <string name="app_description">EAH-AZ100 state and HyperOS integration module</string>
     <string name="capture_running">进行中</string>
     <string name="capture_stopped">已停止</string>
     <string name="product_image_description">EAH-AZ100 耳机示意图</string>
-    <string name="product_model">EAH-AZ100</string>
     <string name="section_settings">模块设置</string>
     <string name="section_devices">已配对设备</string>
     <string name="section_artwork">设备图片</string>
@@ -27,36 +26,26 @@
     <string name="state_reading">正在读取耳机状态</string>
     <string name="state_controlling">正在确认控制结果</string>
     <string name="state_official">官方 App 正在使用耳机</string>
-    <string name="state_auto_on">自动管理已开启</string>
-    <string name="state_auto_off">自动管理已关闭</string>
     <string name="device_automatic">自动选择</string>
     <string name="device_automatic_unique">自动选择唯一的 AZ100</string>
     <string name="device_chooser_title">选择已配对的 AZ100</string>
     <string name="cancel">取消</string>
-    <string name="bluetooth_unavailable">蓝牙不可用</string>
     <string name="permission_bluetooth_missing">未授予蓝牙连接权限</string>
     <string name="permission_automation_missing">自动管理需要蓝牙连接和通知权限</string>
     <string name="automation_start_failed">无法启动自动管理</string>
-    <string name="paired_read_failed">无法读取已配对设备</string>
     <string name="framework_connected">LSPosed 已连接</string>
     <string name="framework_disconnected">LSPosed 未连接</string>
     <string name="mode_off">关闭</string>
     <string name="mode_anc">降噪</string>
     <string name="mode_ambient">环境声</string>
-    <string name="mode_unknown">未知</string>
-    <string name="outside_mode_summary">外音模式  %1$s · %2$s</string>
-    <string name="firmware_summary">固件  左 %1$s / 右 %2$s\n最近读取  %3$s</string>
-    <string name="art_builtin">内置示意图</string>
     <string name="art_imported">已导入图片</string>
     <string name="art_import_success">图片已导入</string>
     <string name="art_import_failed">无法导入图片</string>
     <string name="art_official_success">已导入官方图片</string>
-    <string name="art_official_missing">未找到可用图片</string>
     <string name="art_working">正在处理图片…</string>
     <string name="diagnostic_heading">诊断与协议日志</string>
     <string name="diagnostic_back">返回设备状态</string>
     <string name="section_permissions">权限与后台</string>
-    <string name="permissions_summary">蓝牙连接：%1$s\n通知：%2$s\n电池优化：%3$s</string>
     <string name="permission_granted">已允许</string>
     <string name="permission_missing">未允许</string>
     <string name="battery_unrestricted">已豁免</string>
@@ -72,7 +61,6 @@
     <string name="capability_installed">已安装</string>
     <string name="capability_unavailable">不可用</string>
     <string name="capability_degraded">受限</string>
-    <string name="capability_format">%1$s：%2$s</string>
     <string name="capability_settings">蓝牙设置集成</string>
     <string name="capability_hyperos">HyperOS 耳机集成</string>
     <string name="capability_fusion">融合设备路由</string>
@@ -122,9 +110,5 @@
     <string name="official_app_missing">未找到 Technics Audio Connect</string>
     <string name="framework_preferences_failed">无法打开 LSPosed 远程配置</string>
     <string name="diagnostic_status_summary">%1$s\n%2$s\n采集 %3$s · %4$d 个文件 / %5$d B</string>
-    <string name="framework_error_summary">%1$s\n%2$s</string>
-    <string name="firmware_error_summary">%1$s\n%2$s</string>
     <string name="battery_percent">%1$d%%</string>
-    <string name="device_choice_summary">%1$s\n%2$s</string>
-    <string name="capability_host_summary">%1$s · %2$s</string>
 </resources>

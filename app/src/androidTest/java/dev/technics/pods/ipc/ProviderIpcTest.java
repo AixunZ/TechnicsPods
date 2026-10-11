@@ -98,6 +98,7 @@ public class ProviderIpcTest {
                 assertEquals("rejected", response.getString("status"));
                 assertNull(response.getString("request_id"));
                 assertNotNull(response.getString("error"));
+                assertEquals(before.getLong("generation"), response.getLong("generation"));
                 Bundle after = state();
                 assertEquals(before.getLong("generation"), after.getLong("generation"));
                 assertEquals(before.getString("request_id"), after.getString("request_id"));
@@ -114,6 +115,16 @@ public class ProviderIpcTest {
         for (String mode : new String[]{"w", "wt", "wa", "rw", "rwt"}) {
             assertArtworkOpenRejected(Az100ArtProvider.ART_URI, mode);
         }
+    }
+
+    @Test
+    public void artworkSlotsRetainReadOnlyPngContract() {
+        assertEquals("image/png", resolver.getType(Az100ArtProvider.ART_URI));
+        for (String slot : new String[]{"main", "left", "right", "case"}) {
+            assertEquals("image/png", resolver.getType(Az100ArtProvider.slotUri(slot)));
+        }
+        assertNull(resolver.getType(Uri.parse("content://dev.technics.pods.art/product?slot=main&slot=left")));
+        assertNull(resolver.getType(Uri.parse("content://dev.technics.pods.art/product?slot=unknown")));
     }
 
     @Test

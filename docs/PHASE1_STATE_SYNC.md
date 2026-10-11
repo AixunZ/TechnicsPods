@@ -2,6 +2,8 @@
 
 日期：2026-10-09。测试候选：0.10.0-beta.1 / versionCode 30。
 
+本文保留第一阶段的历史实现与实机记录。2026-10-11 当前候选为 beta.2 / versionCode 31：两个系统入口控制与状态更新、Settings 震动、状态栏图标以及 Settings/MiLink 图片已有用户确认；模块设备页三个配置入口仍无响应，按用户要求暂停继续修复。当前 Settings 宿主等级编码仍未确认，beta 不转发 `updateAncLevel`，优先于下文 v29 的历史等级转发记录。最新状态见 [PROJECT_STATUS.md](PROJECT_STATUS.md) 与 [CURRENT_SESSION_HANDOFF.md](CURRENT_SESSION_HANDOFF.md)。
+
 ## 基线与范围
 
 用户已确认原有模块在融合设备中心、蓝牙设备详情页正常显示，并可以显示和切换关闭、降噪、通透。记录中的测试基线为 Xiaomi nezha、Android 17、HyperOS OS4.0.0.17.XPACNXM，EAH-AZ100 固件 JNZ1ZE 1.040，Technics Audio Connect 4.4.0；本次未重新核验硬件版本。

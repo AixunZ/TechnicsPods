@@ -32,6 +32,16 @@ public class Az100HookDeviceIdentityTest {
         assertEquals(SELECTED, guard.targetAddress(new Owner(SELECTED, null)));
         assertNull(guard.targetAddress(new Owner(OTHER, null)));
     }
+
+    @Test public void nestedHostModelAddressIsAccepted() {
+        Az100HookDeviceIdentity guard = new Az100HookDeviceIdentity(SELECTED);
+        assertEquals(SELECTED, guard.targetAddress(new NestedOwner(SELECTED)));
+    }
+
+    @Test public void nestedConflictingHostModelIsRejected() {
+        Az100HookDeviceIdentity guard = new Az100HookDeviceIdentity(SELECTED);
+        assertNull(guard.targetAddress(new NestedOwner(OTHER)));
+    }
     public static final class Owner {
         private final String address;
         private final String mac;
@@ -39,5 +49,17 @@ public class Az100HookDeviceIdentityTest {
         public String getAddress() { return address; }
         public String getMac() { return mac; }
         public String getName() { return "Renamed headset"; }
+    }
+
+    public static final class NestedOwner {
+        private final NestedInfo info;
+        NestedOwner(String address) { info = new NestedInfo(address); }
+        public NestedInfo getHeadsetInfo() { return info; }
+    }
+
+    public static final class NestedInfo {
+        private final String address;
+        NestedInfo(String address) { this.address = address; }
+        public String getAddress() { return address; }
     }
 }

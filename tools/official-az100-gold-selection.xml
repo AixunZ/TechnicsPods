@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<az100-selection model="EAH-AZ100" color="gold" reviewed="true">
+    <slot name="main" apkIndex="1" resource="drawable/az100_gld_c" entry="res/39d1.webp" configuration="xxhdpi" />
+    <slot name="left" apkIndex="1" resource="drawable/az100_gld_l" entry="res/uVm.webp" configuration="xxhdpi" />
+    <slot name="right" apkIndex="1" resource="drawable/az100_gld_r" entry="res/qVR.webp" configuration="xxhdpi" />
+    <slot name="case" apkIndex="1" resource="drawable/az100_gld_c" entry="res/39d1.webp" configuration="xxhdpi" />
+</az100-selection>

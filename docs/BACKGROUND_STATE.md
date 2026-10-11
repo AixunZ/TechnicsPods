@@ -1,6 +1,8 @@
 # AZ100 background state monitor
 
-The planned `0.10.0-beta.1` build adds opt-in connection management around the Android connected-device foreground service. It samples the read-only AZ100 endpoint every 30 seconds through the same central runtime used by manual and system control requests. System hooks consume Provider snapshots asynchronously; they do not perform RFCOMM I/O in host callbacks. Official-app handover and disconnect recovery remain pending physical beta acceptance.
+The `0.10.0-beta.2` candidate retains beta.1's opt-in connected-device foreground management. It samples the read-only AZ100 endpoint every 30 seconds through the central runtime used by manual and system control requests. System hooks consume Provider snapshots asynchronously; they do not perform RFCOMM I/O in host callbacks. Official-app handover and disconnect recovery remain pending dedicated physical acceptance.
+
+Status synchronized 2026-10-11: user reports confirm current system control/state updates, Settings haptics, status-bar rendering and both system image replacements. The three Device-page configuration rows remain unresponsive and further repair is paused. No broad boot/background/ownership acceptance follows from the successful foreground controls; see [current handoff](CURRENT_SESSION_HANDOFF.md).
 
 ## Physical-device test
 
@@ -32,6 +34,6 @@ The service submits read-only requests to `Az100ConnectionRuntime`, which owns t
 
 ## Beta limitations
 
-Status-bar/profile reconciliation and capability records need a physical beta run. A cached state is returned while a background Provider read is pending. Settings ANC-strength levels remain unavailable until the host encoding is verified.
+Basic status-bar rendering is user-confirmed; profile reconciliation, multi-headset ownership and capability-record accuracy still need dedicated acceptance. A cached state is returned while a background Provider read is pending. Settings ANC-strength levels remain unavailable until the host encoding is verified. Device selection via the main Device-page row is currently inaccessible because that row does not respond.
 
 If official ownership cannot be confirmed after process recovery, the module keeps yielding. Restart Technics Audio Connect to reannounce its sessions, or turn Bluetooth fully off and on. A confirmed adapter-off state releases the recovery lock because no live Bluetooth socket can remain; subsequent connection/state reads must establish freshness again.

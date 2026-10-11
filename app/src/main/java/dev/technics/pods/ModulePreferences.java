@@ -14,6 +14,9 @@ public final class ModulePreferences {
     public static final String DIAGNOSTICS = "diagnostic_probes";
     public static final String SELECTED_ADDRESS = "selected_address";
     public static final String START_ERROR = "start_error";
+    /** Manual artwork finish; empty means automatic protocol detection. */
+    public static final String ART_COLOR_OVERRIDE = "art_color_override";
+    public static final String ART_COLOR_AUTO = "art_color_auto";
 
     private ModulePreferences() {}
 
@@ -31,6 +34,8 @@ public final class ModulePreferences {
                     .putBoolean(STATUS_ICON, local.getBoolean(STATUS_ICON, true))
                     .putBoolean(DIAGNOSTICS, local.getBoolean(DIAGNOSTICS, false))
                     .putString(SELECTED_ADDRESS, local.getString(SELECTED_ADDRESS, ""))
+                    .putString(ART_COLOR_OVERRIDE, local.getString(ART_COLOR_OVERRIDE, ""))
+                    .putString(ART_COLOR_AUTO, local.getString(ART_COLOR_AUTO, ""))
                     .apply();
         } catch (RuntimeException ignored) {
             // Settings remain available locally while the framework is disconnected.
