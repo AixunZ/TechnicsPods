@@ -12,7 +12,7 @@ The GitHub release publishes exactly these locally generated and verified files:
 - `SHA256SUMS.txt`
 - `delivery-manifest.json`
 
-Local output directory: `dist/0.10.0-beta.3` contains only these five fixed attachments. The release APK SHA-256 is `c6257b7105a594d5d1814715bc41594089b0938814b8a37d2c93a3a065051986`; its maintainer certificate SHA-256 is `97598098835abf3b86d18b028333a3c06d575fd7a0f5e14e2a4d438b5b13292d`. The mapping SHA-256 is `06304a1a4fcf9bca32a287ff6e76520f3e44ba8a1a014044cacf8acd1a329465`. The generated `SHA256SUMS.txt` is the source of truth for the source archive and manifest hashes. The manifest records `sourceRevision=7726f7c67b9970f74580bf6b748185174b53ff61`, `sourceDirty=false`, `releaseSignatureVerified=true`, 124 passing unit tests, 0 lint errors/60 warnings, `instrumentationExecuted=false` and `physicalAcceptanceExecuted=false`.
+Local output directory: `dist/0.10.0-beta.3` contains only these five fixed attachments. The release APK SHA-256 is `c6257b7105a594d5d1814715bc41594089b0938814b8a37d2c93a3a065051986`; its maintainer certificate SHA-256 is `97598098835abf3b86d18b028333a3c06d575fd7a0f5e14e2a4d438b5b13292d`. The mapping SHA-256 is `06304a1a4fcf9bca32a287ff6e76520f3e44ba8a1a014044cacf8acd1a329465`. The generated `SHA256SUMS.txt` is the source of truth for the source archive and manifest hashes. The manifest records the clean tagged source revision, `sourceDirty=false`, `releaseSignatureVerified=true`, 124 passing unit tests, 0 lint errors/60 warnings, `instrumentationExecuted=false` and `physicalAcceptanceExecuted=false`.
 
 The GitHub Pre-release upload is not represented as complete by local packaging; publish these five files only after reviewing the manifest and repository target.
 
