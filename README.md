@@ -1,107 +1,123 @@
 # TechnicsPods
 
-TechnicsPods is an experimental LSPosed module that integrates Technics EAH-AZ100 earbuds with Xiaomi HyperOS system surfaces. The project has two separate layers:
+> **中文为默认语言 · [English version](README_EN.md)**
 
-- A verified Panasonic RACE/RFCOMM transport layer for reading state and performing guarded noise-control writes.
-- Protective HyperOS/MiLink hooks that make AZ100 visible to Xiaomi system pages and route Fusion Device Center cards to the stock headset detail page.
+TechnicsPods 是一个面向小米 HyperOS 的 LSPosed 模块，让 Technics EAH-AZ100 在系统蓝牙详情、Fusion Device Center 和相关 HyperOS 页面中以系统耳机的形式显示，并提供状态读取与受保护的降噪模式控制。
 
-The current hardware baseline is Technics Audio Connect 4.4.0, EAH-AZ100 firmware `JNZ1ZE 1.040`, Xiaomi `nezha`, Android 17, HyperOS `OS4.0.0.17.XPACNXM`. Obfuscated MiLink class names are ROM-specific and must be rediscovered after a major ROM update.
+本项目是独立实现，感谢 [HuaweiPods](https://github.com/Nshpiter/HuaweiPods) 提供公开的研究参考和启发；TechnicsPods 不包含 HuaweiPods 或 Technics Audio Connect 的代码。
 
-## Current Status
+## 当前版本
 
-The current candidate is `0.10.0-beta.3` (`versionCode 32`). It is the first public test release and is intended to be distributed as a GitHub **Pre-release**. The maintainer-signed APK has been built and verified locally; the GitHub upload remains an operational publishing step. The recorded hardware baseline remains Xiaomi `nezha`, Android 17, HyperOS `OS4.0.0.17.XPACNXM` and AZ100 firmware `JNZ1ZE 1.040`; historical captures used Audio Connect 4.4.0 and bundled artwork/colour mappings were reviewed from 5.0.1 (104). On 2026-10-11 the user confirmed Settings product-image replacement. Earlier reports confirmed both system entries' mode control/state updates, Settings haptics, the status-bar headset icon and MiLink image replacement.
+- **版本**：`0.10.0-beta.3`（`versionCode 32`）
+- **发布类型**：GitHub **Pre-release**，这是首个公开测试版
+- **包名**：`dev.technics.pods`
+- **适用耳机**：Technics EAH-AZ100
+- **关于页开发者**：**AixunZ**
+- **公开下载**：[GitHub Releases](https://github.com/AixunZ/TechnicsPods/releases/tag/v0.10.0-beta.3)
 
-The Device page rows **选择 AZ100**, **耳机颜色** and **设备图片** still do not respond to taps on the phone. The previous click changes and compiled Compose tests did not establish a working fix. Automatic colour detection is implemented but has not been separately accepted; manual colour, device selection and artwork actions are currently inaccessible through those rows. Work on these failures is paused at the user's request. See [current handoff](docs/CURRENT_SESSION_HANDOFF.md) for the saved implementation and verification boundaries.
+beta.3 是公开测试版本，不代表所有 ROM、固件或系统页面都已完成实机验收。安装前请确认设备支持 LSPosed 回滚，并保留日志以便排查。
 
-The beta is a public test build rather than a complete hardware-acceptance claim. No adb device was available for this release workflow, so instrumentation execution and full physical acceptance remain outstanding. Install only on a device where LSPosed rollback and log collection are available, and verify the APK SHA-256 and maintainer signing certificate before use. The verified local release APK SHA-256 is `c6257b7105a594d5d1814715bc41594089b0938814b8a37d2c93a3a065051986`; the maintainer certificate SHA-256 is `97598098835abf3b86d18b028333a3c06d575fd7a0f5e14e2a4d438b5b13292d`. See [beta.3 release notes](docs/BETA3_RELEASE.md) and [public beta acceptance](docs/PUBLIC_BETA_ACCEPTANCE.md).
+## 功能与证据等级
 
-1. AZ100 is recognized as an eligible headset service.
-2. The stock `SOUND_BLUETOOTH_CONTROL` display configuration is selected instead of `BluetoothCardView`.
-3. The hook waits for the asynchronously created `HeadsetContentController`.
-4. It invokes `fc.t.b0()` when ready, opening the same stock headset control/detail page used by the direct earphone entry.
+| 能力 | 当前状态 | 证据等级 |
+| --- | --- | --- |
+| 识别 AZ100 并显示系统耳机身份 | 已实现 | 已验证 |
+| 读取左右耳、充电盒电量及降噪状态 | 已实现 | 已验证 |
+| 系统蓝牙详情中的降噪模式切换 | 已实现，采用读前确认、ACK 和读回保护 | 已验证/需按设备复测 |
+| Fusion Device Center 进入系统耳机详情页 | 已实现延迟路由 | 已验证于记录的 ROM 配置 |
+| 状态栏无线耳机图标归属 | 已实现多 profile 状态协调 | 已验证于已知回调签名 |
+| MiLink/Settings AZ100 设备图像替换 | 已实现保守资源匹配 | 已在测试机确认渲染 |
+| Device 页面手动设备、颜色和图片选择 | 两台新增测试主机已报告主要流程可用；`nezha` 基线入口仍无响应 | 按设备验证 |
+| 自动颜色识别和资源选择 | 已实现，尚未单独实机验收 | 未完成实机验证 |
+| 其他 ROM、固件和完整生命周期场景 | 尚未覆盖 | 未验证 |
 
-The outer Fusion card's blue phone-host marker was unresolved in the previous evidence and needs rechecking. The app provides device state, selected-device settings, opt-in management, custom artwork and a separate advanced diagnostic surface. Stock mode callbacks submit typed requests through the module process; a successful installation report does not establish that a view rendered or a write completed on hardware.
+所有 Hook 都会优先放行非 AZ100 设备和未知签名。ROM 更新后，混淆的 MiLink 类名可能改变，需要重新探测。
 
-## Download and install
+## 兼容性记录
 
-Use the [GitHub Releases page](https://github.com/AixunZ/TechnicsPods/releases) and choose the `v0.10.0-beta.3` **Pre-release**. The public installation file is `TechnicsPods-0.10.0-beta.3-release.apk`; download `SHA256SUMS.txt` and `delivery-manifest.json` alongside it. The manifest records the APK package, version, certificate SHA-256 and attachment hashes. The source archive and mapping file are also included. Debug, test-signed, unsigned and instrumentation APKs are local test artifacts.
+以下记录只描述已经提供证据的组合，不代表其他设备必然兼容：
 
-On Windows, verify the downloaded APK hash with `Get-FileHash -Algorithm SHA256 .\TechnicsPods-0.10.0-beta.3-release.apk` and compare it with `SHA256SUMS.txt`. With Android SDK Build Tools, run `apksigner verify --verbose --print-certs TechnicsPods-0.10.0-beta.3-release.apk` and compare the signer certificate SHA-256 with the delivery manifest. A signature error or mismatch is a failed verification.
+| 设备/系统 | beta.3（32）结果 |
+| --- | --- |
+| 小米 17 Ultra / HyperOS 4 | 三个 Device 页面入口的完整主要流程已通过 |
+| 小米 11 Ultra / HyperOS 2 底层、HyperOS 3 上层移植包 | 三个 Device 页面入口的完整主要流程已通过 |
+| Xiaomi `nezha` / Android 17 / HyperOS `OS4.0.0.17.XPACNXM` | 历史记录：**选择 AZ100、耳机颜色、设备图片** 三个入口点击无响应；其余已记录桥接功能按文档范围验证 |
+| 其他 HyperOS/Android 版本、AZ100 固件或未列出的设备 | 未验证 |
 
-1. Install the verified APK and enable TechnicsPods in LSPosed.
-2. Enable its declared scopes: `com.panasonic.technicsaudioconnect`, `com.android.bluetooth`, `com.android.systemui`, `com.android.settings`, `com.miui.home`, `com.milink.service` and `com.xiaomi.bluetooth`. The source of truth is `META-INF/xposed/scope.list` in the APK.
-3. Reboot after changing LSPosed scopes, then pair/connect the EAH-AZ100 through Android Bluetooth settings.
-4. Use Bluetooth device details or Fusion Device Center for daily mode control. Test official-app coexistence separately using the [acceptance checklist](docs/PUBLIC_BETA_ACCEPTANCE.md).
+“完整主要流程”仅指上述 Device 页面入口及其主要操作路径；主题、旋转、字体缩放、后台恢复、多设备和所有异常路径仍需单独验收。已记录的 AZ100 固件基线为 `JNZ1ZE 1.040`。
 
-Internal beta.1/beta.2 APKs used a local debug/test certificate. Android rejects an in-place update from that certificate to a different maintainer key. Preserve any needed diagnostics, uninstall the internal candidate and install beta.3. Future public updates must use the same maintainer certificate. GitHub Releases is the current public distribution channel; no third-party module index is published in this beta.
+## 下载、校验与安装
 
-## Development credit
+从 [v0.10.0-beta.3 Pre-release](https://github.com/AixunZ/TechnicsPods/releases/tag/v0.10.0-beta.3) 下载：
 
-As of 2026-10-11, the maintainer estimates that more than 500 million GPT tokens were used in the development of this project. Models involved include GPT-5.6-sol, GPT-6.0-Astra, and GPT-6.1-sol. This is a maintainer-provided estimate, not an OpenAI-endorsed or independently audited usage report.
+- `TechnicsPods-0.10.0-beta.3-release.apk`（公开安装包）
+- `TechnicsPods-0.10.0-beta.3-source.zip`（源码归档）
+- `TechnicsPods-0.10.0-beta.3-mapping.txt`（R8 mapping）
+- `SHA256SUMS.txt`、`delivery-manifest.json`（校验与交付清单）
 
-## Completed
+GitHub 自动生成的 source ZIP/TAR 也会出现在页面中。debug、test-signed、unsigned 和 instrumentation APK 仅用于本地测试，不是默认下载包。
 
-- Read-only RFCOMM/RACE session with stream-safe frame decoding, response matching, timeout and cancellation handling.
-- Verified reads for model, left/right battery, cradle battery, outside-control mode and levels, ambient sub-mode, adaptive ANC, firmware and TWS partner availability.
-- Typed builders and parsers for the confirmed AZ100 commands; no arbitrary HEX sender.
-- Guarded noise-control writes with read-before-write, ACK checking, forced read-back and best-effort restoration.
-- Background state repository and connected-device foreground monitor with partial-read and disconnect cache semantics.
-- HyperOS battery inventory confirming that `com.android.bluetooth` already stores AZ100 battery values.
-- Settings and MiLink bridges for AZ100 identity, cached battery and read-only ANC/state rendering.
-- Fusion Device Center service fallback, headset panel selection and delayed controller click routing.
-- Unit tests for protocol parsing, state merging, control policy and Fusion routing policy.
-- Phase 1: asynchronous system mode writes, confirmed-result publication to the restricted state Provider, state-change observers, bounded cancellation and stale-sample protection.
-- Settings Bluetooth-detail control: forwards verified mode actions through the central Provider runtime and refreshes asynchronously. Native ANC-strength level encoding remains unavailable and is not advertised or written.
-- Status-bar wireless-headset ownership: exact `A2dpService.handleConnectionStateChanged(BluetoothDevice,int,int)` discovery, current-state argument 2, multi-profile address tracking and startup reconciliation. Unknown ROM signatures are safe no-ops; unrelated headsets do not claim or hide the module-owned icon.
-- Capability IPC reports exact installed hook counts and distinguishes installed from unavailable signatures.
-- Verified MiLink artwork replacement is installed only for the known product-image resource IDs and AZ100 identity.
-- Genuine Miuix Home / Device / About navigation, system/light/dark appearance, a shared lifecycle state owner and secondary advanced diagnostics. Daily noise control remains in system pages.
-- Slot-aware restricted artwork Provider and versioned official resource mappings. Five reviewed AZ100 finishes (black, blue, gold, silver, violet) are bundled from Technics Audio Connect 5.0.1 with provenance. Manual import/override code exists, but the Device page entry rows are currently unresponsive.
-- AZ100 model validation and automatic colour selection follow the official app's model/colour protocol; their evidence and remaining physical checks are in `docs/OFFICIAL_COLOR_FINDINGS.md`.
-- Settings product-image replacement uses the identified AZ100 fragment and a conservative single large-header candidate, with asynchronous Provider decoding, host write-back protection and original restoration. The user confirmed rendering on the tested phone; all fallback/lifecycle cases have not been accepted.
-- Settings user mode requests acknowledge acceptance with a single system-respecting haptic, guarded by request ID, device and view/session generation.
+已发布 APK 的 SHA-256：
 
-## Not Completed
+```text
+c6257b7105a594d5d1814715bc41594089b0938814b8a37d2c93a3a065051986
+```
 
-- Pending/error presentation in the stock detail page still needs physical beta testing. Historical mode switching is user-confirmed; the beta does not claim native Settings ANC-strength support.
-- External mode changes are discovered by opt-in automatic monitoring at 30-second intervals after each sample completes.
-- Reproducing the Fusion Device Center outer blue phone-host indicator.
-- Full charging-state semantics for all six HyperOS battery slots.
-- Compatibility validation on other HyperOS/Android releases and other AZ100 firmware versions.
-- Device page selection, colour and artwork rows remain unresponsive; further repair is paused at the user's request.
-- MiLink artwork appears soft when enlarged from the official 176 x 130 case asset; no sharpening or replacement source was applied.
-- Full physical acceptance for themes/rotation/font scale, automatic colour, official-app ownership, background recovery, multi-device artwork and unknown ROMs.
-- GitHub Pre-release upload is still a publishing step; the maintainer-signed artifact and local delivery manifest are ready.
+维护者签名证书 SHA-256：
 
-## Architecture
+```text
+97598098835abf3b86d18b028333a3c06d575fd7a0f5e14e2a4d438b5b13292d
+```
 
-- `app/src/main/java/dev/technics/pods/protocol/`: typed RACE frames, command IDs and response/state parsers.
-- `app/src/main/java/dev/technics/pods/diagnostic/`: safe read-only client, guarded control clients and test results.
-- `app/src/main/java/dev/technics/pods/state/`: state cache, persistent repository, Provider and foreground monitor.
-- `app/src/main/java/dev/technics/pods/state/Az100ConnectionRuntime.java`: central module-process transport ownership and official-session handover.
-- `app/src/main/java/dev/technics/pods/hook/Az100HyperOsBridgeHook.java`: generic MiLink/HyperOS identity, battery and ANC bridge.
-- `app/src/main/java/dev/technics/pods/hook/Az100SettingsBridgeHook.java`: legacy Settings headset-page bridge.
-- `app/src/main/java/dev/technics/pods/hook/Az100FusionDeviceRouteHook.java`: Fusion service lookup, panel/config selection and headset-detail click routing.
-- `app/src/main/java/dev/technics/pods/hook/HyperOsSurfaceProbeHook.java`: read-only surface inventory for ROM changes.
-- `app/src/main/java/dev/technics/pods/hook/WirelessHeadsetStatusBarHook.java`: exact A2DP status callback and multi-profile reconciliation.
-- `app/src/main/java/dev/technics/pods/hook/Az100ArtHook.java`: identity-bound MiLink artwork and a conservative Settings header selector; Settings resource IDs are not yet locked to a verified per-ROM list.
-- `app/src/main/java/dev/technics/pods/ui/`: immutable UI state, lifecycle state owner and Miuix three-tab pages.
+Windows 校验：
 
-All hooks are protective: non-AZ100 devices and unknown signatures continue through the original implementation. Cross-process state is exposed through the restricted `dev.technics.pods.state` Provider; raw captures remain sensitive.
+```powershell
+Get-FileHash -Algorithm SHA256 .\TechnicsPods-0.10.0-beta.3-release.apk
+```
 
-Diagnostic class-loading and Bluetooth battery inventories are opt-in. Fusion's obfuscated `wc.a`, `wc.b` and `fc.t` route is enabled only for the recorded Android 17 / OS4.0.0.17 profile; other ROMs retain generic recognition and report the route unavailable.
+有 Android SDK Build Tools 时，可进一步运行：
 
-## Testing the Current Build
+```powershell
+apksigner verify --verbose --print-certs .\TechnicsPods-0.10.0-beta.3-release.apk
+```
 
-1. Install the verified maintainer-signed Release APK for the public beta. Local Debug variants use a separate test identity. Enable the module in LSPosed for the packages listed in `META-INF/xposed/scope.list`.
-2. Reboot after changing LSPosed scopes.
-3. Pair AZ100 and run the exclusive read/control baseline with Technics Audio Connect force-stopped. Test official-app handover separately as described in the beta acceptance checklist.
-4. Open the Fusion Device Center and select AZ100. The inner page should be the stock headset control/detail page.
-5. For a route regression, look for `Found named system Headset panel`, `Routed AZ100 MainCardView to Headset display config`, and `Routed AZ100 MainCardView request to HeadsetContentController` in the LSPosed log.
+请将哈希与 `SHA256SUMS.txt` 核对，将证书指纹与 `delivery-manifest.json` 核对。包名、版本、哈希或签名不一致时，不应安装。
 
-## Build
+安装步骤：
 
-Use JDK 21 with Android SDK Platform 37 and Build Tools 36.1.0. Set `JAVA_HOME` and `ANDROID_HOME` to your installed toolchains (or configure the SDK through untracked `local.properties`). AGP 9.3.1 owns the Kotlin 2.4.0 compiler; Java and Kotlin bytecode targets remain 17. The UI uses Compose BOM 2026.05.01 and Miuix 0.9.2. Local SDKs, toolchains and signing keys are excluded from the source archive.
+1. 安装已校验的 APK，在 LSPosed 中启用 TechnicsPods。
+2. 为模块启用以下作用域：`com.panasonic.technicsaudioconnect`、`com.android.bluetooth`、`com.android.systemui`、`com.android.settings`、`com.miui.home`、`com.milink.service`、`com.xiaomi.bluetooth`。
+3. 修改作用域后重启手机，再通过系统蓝牙设置配对并连接 EAH-AZ100。
+4. 日常使用可从蓝牙设备详情或 Fusion Device Center 控制模式；官方应用共存请按[公开测试验收清单](docs/PUBLIC_BETA_ACCEPTANCE.zh-CN.md)单独测试。独占通信基线测试前，请先强行停止 Technics Audio Connect。
+
+作用域的唯一来源是 APK 中的 `META-INF/xposed/scope.list`。beta.1/beta.2 使用过本地 debug/test 证书，无法直接覆盖安装到维护者密钥签名的 beta.3；如遇证书不一致，请备份诊断资料后卸载旧候选版再安装 beta.3。后续公开版本必须保持同一维护者密钥，才能正常覆盖升级。
+
+## 已知限制
+
+- 在 Xiaomi `nezha` / Android 17 / `OS4.0.0.17.XPACNXM` 记录中，Device 页的“选择 AZ100”“耳机颜色”“设备图片”入口仍无响应；相关修复已暂停，详见[当前交接记录](docs/CURRENT_SESSION_HANDOFF.md)。
+- 原生 Settings ANC 强度级别尚未确认，不会被模块宣称或写入。
+- Fusion 外层蓝色手机主机标记、六个 HyperOS 电池槽的完整充电语义仍待验证。
+- 自动颜色、官方应用所有权切换、后台恢复、多设备资源和未知 ROM 尚未完成完整实机验收。
+- 当前发布流程没有可用 adb 实机，因此 instrumentation 测试和完整物理验收未执行；公开文档不会将其描述为已通过。
+
+## 文档
+
+- [项目状态与证据（英文）](docs/PROJECT_STATUS.md) / [中文](docs/PROJECT_STATUS.zh-CN.md)
+- [beta.3 发布说明（英文）](docs/BETA3_RELEASE.md) / [中文](docs/BETA3_RELEASE.zh-CN.md)
+- [公开测试验收（英文）](docs/PUBLIC_BETA_ACCEPTANCE.md) / [中文](docs/PUBLIC_BETA_ACCEPTANCE.zh-CN.md)
+- [beta 交付与签名](docs/BETA_DELIVERY.md)
+- [安全控制测试](docs/CONTROL_TEST.md)
+- [只读诊断](docs/READ_ONLY_DIAGNOSTIC.md)
+- [后台状态监视](docs/BACKGROUND_STATE.md)
+- [协议与系统桥接](docs/PROTOCOL_SCHEMA.md) · [系统桥接探测](docs/SYSTEM_BRIDGE_PROBE.md)
+- [官方颜色与资源证据](docs/OFFICIAL_COLOR_FINDINGS.md) · [当前交接与未解决问题](docs/CURRENT_SESSION_HANDOFF.md)
+- [版本历史](CHANGELOG.md)
+
+beta.1/beta.2 历史文档保留开发时间线，不代表公开 beta.3 的当前产物状态。
+
+## 从源码构建
+
+构建环境为 JDK 21、Android SDK Platform 37 和 Build Tools 36.1.0。AGP 9.3.1 使用 Kotlin 2.4.0，Java/Kotlin 字节码目标为 17。配置 `JAVA_HOME` 和 `ANDROID_HOME`（或未跟踪的 `local.properties`）后执行以下命令。SDK、工具链、keystore 和密码均不提交到仓库。
 
 ```powershell
 $env:GRADLE_USER_HOME = Join-Path $PWD '.gradle-user-home'
@@ -109,27 +125,12 @@ $env:ANDROID_USER_HOME = Join-Path $PWD '.android-user-home'
 .\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest --no-daemon
 ```
 
-The debug artifact is `app/build/outputs/apk/debug/app-debug.apk`. Debug APKs use the local debug/test key and are for controlled LSPosed testing. Without a configured release key, `assembleRelease` produces `app-release-unsigned.apk`, which cannot be installed as a signed distribution package. With the maintainer signing variables, the signed output is `app/build/outputs/apk/release/app-release.apk`. Only the maintainer-signed Release is copied to the public `TechnicsPods-0.10.0-beta.3-release.apk` filename; see [beta delivery](docs/BETA_DELIVERY.md) for packaging and acceptance boundaries.
+发布签名通过 `TECHNICSPODS_KEYSTORE`、`TECHNICSPODS_STORE_PASSWORD`、`TECHNICSPODS_KEY_ALIAS` 和 `TECHNICSPODS_KEY_PASSWORD` 环境变量配置。没有发布密钥时，`assembleRelease` 只会生成不能作为公开分发包的 unsigned APK。打包边界见 [beta 交付与签名](docs/BETA_DELIVERY.md)。
 
-Release signing can be configured through `TECHNICSPODS_KEYSTORE`, `TECHNICSPODS_STORE_PASSWORD`, `TECHNICSPODS_KEY_ALIAS` and `TECHNICSPODS_KEY_PASSWORD`. Secrets and keystores are excluded from source control. Current build results and artifact hashes are recorded in [beta delivery](docs/BETA_DELIVERY.md).
+## 开发致谢
 
-## Documentation
+截至 2026-10-11，维护者估算本项目开发过程中累计使用了超过 5 亿 GPT tokens。参与的模型包括 GPT-5.6-sol、GPT-6.0-Astra 和 GPT-6.1-sol。这是维护者提供的估算，不代表 OpenAI 背书，也未经独立审计。
 
-- [Project status and evidence](docs/PROJECT_STATUS.md)
-- [Release history](CHANGELOG.md)
-- [Read-only diagnostic](docs/READ_ONLY_DIAGNOSTIC.md)
-- [Safe control test](docs/CONTROL_TEST.md)
-- [Background monitor](docs/BACKGROUND_STATE.md)
-- [Protocol schema](docs/PROTOCOL_SCHEMA.md)
-- [System and HyperOS bridges](docs/SYSTEM_BRIDGE_PROBE.md)
-- [Capture guide](docs/CAPTURE_GUIDE.md)
-- [Public beta acceptance](docs/PUBLIC_BETA_ACCEPTANCE.md)
-- [Beta delivery](docs/BETA_DELIVERY.md)
-- [Beta.3 release notes](docs/BETA3_RELEASE.md)
-- [Beta.2 release notes](docs/BETA2_RELEASE.md)
-- [Artwork resource mapping](docs/artwork-beta2.md)
-- [Current handoff and unresolved issues](docs/CURRENT_SESSION_HANDOFF.md)
+## 许可证与来源
 
-## License and Provenance
-
-TechnicsPods code is licensed under GPL-3.0. The HyperOS integration approach is informed by HuaweiPods, SonyPods and their OppoPods lineage. No Technics Audio Connect code is bundled. Reviewed five-colour official AZ100 artwork is included as third-party assets; its source, signer and resource hashes are recorded in NOTICE and the artwork manifests, and it is not relabeled as GPL code.
+TechnicsPods 代码采用 GPL-3.0 许可证。HyperOS 集成思路参考了 HuaweiPods、SonyPods 及其 OppoPods 衍生项目；Technics Audio Connect 代码未被打包。审核过的五种 AZ100 官方外观资源作为第三方资产随项目提供，其来源、签名和资源哈希记录在 `NOTICE` 及 artwork 清单中，不将其重新标记为 GPL 代码。

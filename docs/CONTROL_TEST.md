@@ -4,7 +4,7 @@ The shared module-process write runtime was introduced in `0.10.0-beta.1` and is
 
 ## Current device feedback — 2026-10-11
 
-The user has confirmed mode control and state updates in both system entry points, Settings haptic feedback, the status-bar headset icon, and now Settings Bluetooth detail artwork replacement. MiLink/control-center artwork also replaces, with source-resolution softness remaining. The module's device-page **选择 AZ100**, **耳机颜色** and **设备图片** rows still do nothing when tapped; the attempted click fix did not pass the user's device retest. Further repair is paused at the user's request. This feedback does not complete the broader coexistence, multi-device and lifecycle acceptance matrix.
+The user has confirmed mode control and state updates in both system entry points, Settings haptic feedback, the status-bar headset icon, and now Settings Bluetooth detail artwork replacement. MiLink/control-center artwork also replaces, with source-resolution softness remaining. The module's device-page **选择 AZ100**, **耳机颜色** and **设备图片** rows were reported working on beta.3/32 on Xiaomi 17 Ultra / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package; the earlier `nezha` record remains unresponsive. This feedback does not complete the broader coexistence, multi-device and lifecycle acceptance matrix.
 
 ## Transaction
 

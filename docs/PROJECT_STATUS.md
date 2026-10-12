@@ -1,12 +1,12 @@
 # TechnicsPods Project Status
 
-Last updated: 2026-10-11 (public beta.3 preparation)
+Last updated: 2026-10-11 (public beta.3 published)
 
 ## Beta.3 public test release
 
-Candidate: `0.10.0-beta.3` / `versionCode 32`. This is the first public test release and is intended for a GitHub **Pre-release**. The About page developer credit is **AixunZ**. The public package set has been generated locally with the maintainer-signed release APK, matching source archive and mapping, `SHA256SUMS.txt`, and `delivery-manifest.json`; GitHub upload remains a publishing step. The verified release certificate SHA-256 is `97598098835abf3b86d18b028333a3c06d575fd7a0f5e14e2a4d438b5b13292d`, and the release APK SHA-256 is `c6257b7105a594d5d1814715bc41594089b0938814b8a37d2c93a3a065051986`. Private signing material stays outside the repository.
+Candidate: `0.10.0-beta.3` / `versionCode 32`. This is the first public test release and is published as a GitHub **Pre-release**. The About page developer credit is **AixunZ**. The public package set was generated with the maintainer-signed release APK, matching source archive and mapping, `SHA256SUMS.txt`, and `delivery-manifest.json`; the five fixed attachments are published at the release page. The verified release certificate SHA-256 is `97598098835abf3b86d18b028333a3c06d575fd7a0f5e14e2a4d438b5b13292d`, and the release APK SHA-256 is `c6257b7105a594d5d1814715bc41594089b0938814b8a37d2c93a3a065051986`. Private signing material stays outside the repository.
 
-The three Device-page rows **选择 AZ100**, **耳机颜色** and **设备图片** remain unresponsive on the recorded phone. Device selection, manual colour changes and artwork import are consequently not accepted through those rows, and further repair is paused for this beta. The latest user reports still cover only partial physical behavior: system control/state updates, Settings haptics, the status-bar icon and MiLink/Settings artwork replacement. No adb device was available for this release workflow, so instrumentation execution and complete hardware acceptance are not claimed.
+The three Device-page rows **选择 AZ100**, **耳机颜色** and **设备图片** were reported working on beta.3/32 on Xiaomi 17 Ultra / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package. The earlier Xiaomi `nezha` / Android 17 / HyperOS `OS4.0.0.17.XPACNXM` record still reports no response from those rows. No adb device was available for this release workflow, so instrumentation execution and complete cross-ROM hardware acceptance are not claimed.
 
 For the public project page, the maintainer estimates that more than 500 million GPT tokens were used in development as of 2026-10-11. Models named by the maintainer include GPT-5.6-sol, GPT-6.0-Astra and GPT-6.1-sol. This is a maintainer-provided estimate and is not an OpenAI-endorsed or independently audited usage report. See [beta.3 release notes](BETA3_RELEASE.md) for release-specific limits and [beta delivery](BETA_DELIVERY.md) for artifact boundaries.
 
@@ -40,6 +40,8 @@ The device/ROM/firmware listed below remain the recorded hardware baseline. Hist
 
 | Host | Evidence | Scope |
 |---|---|---|
+| Xiaomi 17 Ultra / HyperOS 4 | beta.3/32 user report | Three Device-page actions working; exact build and full lifecycle coverage not recorded |
+| Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package | beta.3/32 user report | Three Device-page actions working; exact build and full lifecycle coverage not recorded |
 | Xiaomi `nezha`, Android 17, HyperOS `OS4.0.0.17.XPACNXM` | Recorded LSPosed route logs and user hardware confirmation | Fusion inner route, Settings mode path, AZ100 identity/battery/state |
 | `com.milink.service` `18.1.2.2.2608192125` / code `180010202` | Historical host inventory; later user control/state and artwork reports | Recorded host version; latest package version not re-collected |
 | `com.android.settings` `17` / code `37` | Historical host inventory; user control/haptics reports and 2026-10-11 image success | Recorded host version; latest package version not re-collected |
@@ -80,7 +82,7 @@ The device/ROM/firmware listed below remain the recorded hardware baseline. Hist
   - reaches `com.miui.circulateplus.world.headset.HeadsetDetailFragment`.
 - Status-bar callback discovery is exact for the recorded A2DP signature and basic rendering is user-confirmed. Profile startup reconciliation and multi-headset behavior remain pending dedicated acceptance.
 - MiLink uses verified image IDs; Settings uses the identity-bound conservative large-header selector. Both image replacements are user-confirmed on the recorded phone, with further lifecycle/device-switch cases pending.
-- The protocol reads the AZ100 color after model confirmation and retains automatic finish selection. Manual override code exists, but the Device-page row is unresponsive; automatic colour is not separately accepted.
+- The protocol reads the AZ100 color after model confirmation and retains automatic finish selection. Manual override and image-source paths were reported working on the two beta.3/32 hosts above; the earlier `nezha` record remains unresponsive and automatic colour is not separately accepted.
 
 The final route log contains:
 
@@ -94,13 +96,13 @@ Routed AZ100 MainCardView request to HeadsetContentController
 ## What Is Not Working Yet
 
 - The Fusion Device Center outer AZ100 tile does not show the blue phone-host marker. This is a separate device-host/status model from the inner panel route.
-- Device-page **选择 AZ100**, **耳机颜色** and **设备图片** remain unresponsive after the last attempted repair. Further repair is paused by user request.
+- Device-page **选择 AZ100**, **耳机颜色** and **设备图片** are host-specific: reported working on the two beta.3/32 hosts above and still unresponsive in the earlier `nezha` record.
 - Both current system entry control/state paths are user-confirmed. Pending/error presentation, official ownership and cancellation/lifecycle boundary cases still need dedicated tests.
 - MiLink artwork softness remains; the official case asset is only 176 x 130. No sharpening or alternate source was introduced.
 - Charging flags and offline/stale presentation require more ROM-specific validation.
 - Compatibility with other HyperOS builds, Android versions and AZ100 firmware versions is unknown.
 - Native Settings ANC-strength level encoding is unverified; the beta exposes no invented conversion or write path. This restriction supersedes v29 level-forwarding behavior and prevents a host slider value being treated as a verified AZ100 percentage.
-- Maintainer release signing and local public packaging are complete; the GitHub Pre-release upload remains to be performed. Optional signing environment variables and unsigned/minified test artifacts remain available for reproducibility.
+- Maintainer release signing, local public packaging and the GitHub Pre-release upload are complete. Optional signing environment variables and unsigned/minified test artifacts remain available for reproducibility.
 - Official APK inspection establishes AZ100 model IDs `0x00A0..0x00A3` for the colour-read gate. This evidence does not imply that every general control-handshake path performs strict model-ID validation; see `OFFICIAL_COLOR_FINDINGS.md` and `CONTROL_TEST.md`.
 
 ## Fusion Route Investigation Summary
@@ -118,9 +120,9 @@ This fix intentionally leaves the original behavior for non-AZ100 devices and fo
 
 ## Next Acceptance Order
 
-Further implementation is paused at the user's request. When work is resumed, preserve the current user-confirmed system paths and use these outstanding checks:
+The public beta is released. Preserve the current user-confirmed system paths and use these outstanding checks for future maintenance:
 
-1. Diagnose the three unresponsive Device-page rows; execute the Compose click cases and reproduce on the phone before declaring them fixed.
+1. Recheck the Device-page actions on the `nezha` host and execute the Compose click cases on hardware before generalizing the two successful beta.3/32 reports.
 2. Separately verify automatic colour, manual override/import after the rows work, and Settings/MiLink device switching, asynchronous host writes and original-image restoration.
 3. Confirm automatic management, official-app ownership, cancel/reconnect and status-bar ownership with simultaneous headsets.
 4. Complete remaining theme/font-scale/rotation/background/unknown-ROM cases from `PUBLIC_BETA_ACCEPTANCE.md`.
@@ -147,4 +149,4 @@ The preceding beta.2 session compiled/ran these local checks (timestamps in the 
 
 APK: `app/build/outputs/apk/debug/app-debug.apk`
 
-124 unit tests passed; Lint reports 0 errors and 60 warnings. Debug and minified Release built and local test signatures were checked. The instrumentation cases, including the added Device-row click case, were compiled but not run; the packaged test APK predates the new click case. The user reports partial physical acceptance and the unresolved clicks; no full checklist or adb-backed acceptance is claimed. This status-only sync does not rebuild or replace APKs. See `BETA_DELIVERY.md` for current artifact/source boundaries.
+124 unit tests passed; Lint reports 0 errors and 60 warnings. Debug and minified Release built and local test signatures were checked. The instrumentation cases, including the added Device-row click case, were compiled but not run; the packaged test APK predates the new click case. The user reports device-specific physical acceptance on the two beta.3/32 hosts and unresolved clicks on the earlier `nezha` record; no full cross-ROM checklist or adb-backed acceptance is claimed. This status-only sync does not rebuild or replace APKs. See `BETA_DELIVERY.md` for current artifact/source boundaries.

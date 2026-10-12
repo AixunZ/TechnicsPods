@@ -2,7 +2,7 @@
 
 The independent RFCOMM client and shared module-process runtime introduced in `0.10.0-beta.1` are retained in `0.10.0-beta.2`. Manual diagnostics and the opt-in background monitor submit read-only requests through that owner; control requests use the same exclusive queue.
 
-As of the user's 2026-10-11 retest, both system entry points control and update state normally, and Settings artwork replacement succeeds. The module device-page **选择 AZ100**, **耳机颜色** and **设备图片** entries remain unresponsive, so the picker/import instructions are not a confirmed working path in this build. The user has paused further repair; this document records the current behavior rather than a completed UI fix.
+As of the user's beta.3/32 reports, both system entry points control and update state normally, Settings artwork replacement succeeds, and the module Device-page **选择 AZ100**, **耳机颜色** and **设备图片** paths were reported working on Xiaomi 17 Ultra / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package. The earlier Xiaomi `nezha` record still has unresponsive entries, so picker/import behavior remains host-specific rather than a universal compatibility claim.
 
 ## Before running
 
