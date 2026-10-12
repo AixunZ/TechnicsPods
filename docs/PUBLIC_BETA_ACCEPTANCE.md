@@ -2,7 +2,7 @@
 
 This checklist describes the published `0.10.0-beta.3` / versionCode 32 first public test release. The latest beta.3/32 device reports cover the explicitly listed Device-page paths; they do not establish cross-ROM, lifecycle or complete instrumentation acceptance.
 
-## Recorded acceptance status — 2026-10-11
+## Recorded acceptance status — corrected 2026-10-12
 
 | Area | Evidence and current status |
 | --- | --- |
@@ -11,31 +11,30 @@ This checklist describes the published `0.10.0-beta.3` / versionCode 32 first pu
 | Status-bar headset icon | User reports normal display; Bluetooth restart and multiple-headset cases were not separately reported |
 | MiLink / control-center artwork | User confirms replacement; displayed image appears soft and has not been sharpened |
 | Settings Bluetooth detail artwork | User confirms replacement in the latest test |
-| Device page “选择 AZ100”, “耳机颜色”, “设备图片” | User reports all three paths working on Xiaomi 17 Ultra / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package; the earlier `nezha` record remains unresponsive |
+| Device page “选择 AZ100”, “耳机颜色”, “设备图片” | User reports all three actions and their main paths working on Xiaomi 17 Ultra (`nezha`) / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package; the earlier failure on the same Xiaomi 17 Ultra is superseded by the latest retest |
 | Automatic AZ100 color recognition | Implemented; the complete Device-page reports cover the listed manual paths, while automatic selection remains separately unaccepted |
-| Manual device/color/image selection | Reported working on the two beta.3/32 devices above; not accepted on the earlier `nezha` record |
+| Manual device/color/image selection | Reported working on the two beta.3/32 devices above |
 | Local automated validation | Existing build: 124 unit tests passed; Lint 0 errors / 60 warnings; Debug and minified Release built |
 | Compose / artwork instrumentation | Current cases compiled only; retained test APK predates the newest Device-row click case; no adb execution result |
 
-These are device-specific user-reported results, not a complete cross-ROM acceptance pass. The two beta.3/32 reports cover the three Device-page paths listed above; the earlier `nezha` record remains a known failure. Do not treat compiled Compose click tests as evidence for a physical device. No adb device was available for this release workflow: instrumentation execution and complete physical acceptance remain outstanding and must be recorded as unexecuted rather than passing.
+These are device-specific user-reported results, not a complete cross-ROM acceptance pass. The two beta.3/32 reports cover the three Device-page actions and their main paths listed above. On 2026-10-12 the user clarified that `nezha` is the Xiaomi 17 Ultra; its earlier unresponsive-row result is historical and superseded by the latest successful retest. Do not treat compiled Compose click tests as evidence for a physical device. No adb device was available for this release workflow: instrumentation execution and complete physical acceptance remain outstanding and must be recorded as unexecuted rather than passing.
 
-## Recorded compatibility baseline
+## Historical captured compatibility baseline
 
-- Xiaomi `nezha`
+- Xiaomi 17 Ultra (codename `nezha`)
 - Android 17
 - HyperOS `OS4.0.0.17.XPACNXM`
 - Technics Audio Connect 4.4.0
 - EAH-AZ100 firmware `JNZ1ZE 1.040`
 
-Other hosts and firmware versions are unknown. Protective hooks should fall through or report unavailable when their exact signature is absent.
+These exact captured system/app/firmware versions were not re-collected in the latest beta.3 report. The two tested devices are listed below; other hosts and firmware versions remain unverified. Protective hooks should fall through or report unavailable when their exact signature is absent.
 
-## Additional beta.3 device results
+## Latest beta.3 device results
 
 | Host | beta.3/32 result | Boundary |
 | --- | --- | --- |
-| Xiaomi 17 Ultra / HyperOS 4 | The three Device-page actions were reported working | Device-specific report; exact build and all lifecycle cases were not recorded |
-| Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package | The three Device-page actions were reported working | Device-specific report; exact build and all lifecycle cases were not recorded |
-| Xiaomi `nezha` / Android 17 / HyperOS `OS4.0.0.17.XPACNXM` | The three Device-page actions remain unresponsive in the recorded result | Retained as a known limitation for that host |
+| Xiaomi 17 Ultra (`nezha`) / HyperOS 4 | The three Device-page actions and their main paths were reported working | Latest successful retest supersedes the earlier failure on this same device; exact current build and all lifecycle cases were not recorded |
+| Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package | The three Device-page actions and their main paths were reported working | Device-specific report; exact build and all lifecycle cases were not recorded |
 
 ## Before installing
 
@@ -54,12 +53,12 @@ An unsigned release APK is not a signed installation package. If a release build
 5. Exercise Settings mode actions. Confirm requests are accepted by the central Provider and any confirmed result refreshes asynchronously.
 6. Treat Settings ANC-strength level changes as unsupported until the host encoding is independently verified.
 7. Confirm capability records report feature, installed/unavailable status and exact hook count without claiming hardware rendering success.
-8. Confirm artwork replacement is limited to verified MiLink resource IDs or the single conservative Settings header candidate and the selected AZ100. Basic replacement in both entries is user-confirmed; the beta bundles reviewed black, blue, gold, silver and violet mappings from Audio Connect 5.0.1. Source/color/slots, automatic protocol selection, notifications, host asynchronous overwrites and original restoration still need explicit acceptance. The two beta.3/32 Device-page reports include image-source access, while the earlier `nezha` record does not. If the Settings layout is ambiguous or unmeasured, the host image must remain unchanged.
+8. Confirm artwork replacement is limited to verified MiLink resource IDs or the single conservative Settings header candidate and the selected AZ100. Basic replacement in both entries is user-confirmed; the beta bundles reviewed black, blue, gold, silver and violet mappings from Audio Connect 5.0.1. Source/color/slots, automatic protocol selection, notifications, host asynchronous overwrites and original restoration still need explicit acceptance. The two beta.3/32 Device-page reports include image-source access. If the Settings layout is ambiguous or unmeasured, the host image must remain unchanged.
 9. Enable automatic management, then disconnect/reconnect and turn Bluetooth off/on. Confirm a live transaction cancels, cached values remain, and sampling recovers without a concurrent RFCOMM session.
 10. Open Technics Audio Connect while the module is reading or controlling. Confirm official ownership cancels/yields the module, rejects new writes and releases only after the official socket/session ends.
 11. During uncertain official-session recovery, confirm the module keeps yielding. Restart the official app to reannounce sessions, or turn Bluetooth fully off/on; confirmed adapter-off may release the recovery lock and reconnect must read fresh state before writing.
 12. Stop automatic management from the app and notification separately, then close the official app. Confirm there are no autonomous module reads; a new explicit request still performs a fresh read before control.
-13. Test genuine Miuix Home / Device / About navigation, system/light/dark themes, narrow screens and font scale 2. The three Device-page actions are reported working on the two beta.3/32 hosts in the compatibility table, but remain unresponsive in the earlier `nezha` record. Rotate during permissions, diagnostics and image selection; selected tab, results and selected images must survive. About settings must remain reachable by scrolling and no page may create an additional connection or observer. A slow document provider must not freeze the UI during image import or log export.
+13. Test genuine Miuix Home / Device / About navigation, system/light/dark themes, narrow screens and font scale 2. The three Device-page actions and their main paths are reported working on the two beta.3/32 devices in the compatibility table; the earlier Xiaomi 17 Ultra (`nezha`) failure is superseded. Rotate during permissions, diagnostics and image selection; selected tab, results and selected images must survive. About settings must remain reachable by scrolling and no page may create an additional connection or observer. A slow document provider must not freeze the UI during image import or log export.
 14. Switch selected AZ100 devices while an old system detail page is open. Its requests must be rejected, and battery/mode/artwork from one device must not appear as another device's current data.
 15. Test lock-screen connection, reboot, package update, process reclaim and revoked Bluetooth permission. Confirm recovery or an actionable permission/background-restriction state without a host crash.
 16. Install the maintainer-signed beta.3 Release on the test device and verify future same-maintainer-key upgrades. Keep Debug and test-signed variants as local checks only. Exercise an unknown ROM/host signature to confirm affected capabilities fall through safely; publishing a signed package does not establish hardware acceptance.

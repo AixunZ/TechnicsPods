@@ -12,7 +12,7 @@ TechnicsPods 是一个面向小米 HyperOS 的 LSPosed 模块，让 Technics EAH
 - **发布类型**：GitHub **Pre-release**，这是首个公开测试版
 - **包名**：`dev.technics.pods`
 - **适用耳机**：Technics EAH-AZ100
-- **关于页开发者**：**AixunZ**
+- **开发者**：**AixunZ**
 - **公开下载**：[GitHub Releases](https://github.com/AixunZ/TechnicsPods/releases/tag/v0.10.0-beta.3)
 
 beta.3 是公开测试版本，不代表所有 ROM、固件或系统页面都已完成实机验收。安装前请确认设备支持 LSPosed 回滚，并保留日志以便排查。
@@ -27,7 +27,7 @@ beta.3 是公开测试版本，不代表所有 ROM、固件或系统页面都已
 | Fusion Device Center 进入系统耳机详情页 | 已实现延迟路由 | 已验证于记录的 ROM 配置 |
 | 状态栏无线耳机图标归属 | 已实现多 profile 状态协调 | 已验证于已知回调签名 |
 | MiLink/Settings AZ100 设备图像替换 | 已实现保守资源匹配 | 已在测试机确认渲染 |
-| Device 页面手动设备、颜色和图片选择 | 两台新增测试主机已报告主要流程可用；`nezha` 基线入口仍无响应 | 按设备验证 |
+| Device 页面手动设备、颜色和图片选择 | 小米 17 Ultra（`nezha`）和小米 11 Ultra 已报告主要流程可用 | 按设备验证 |
 | 自动颜色识别和资源选择 | 已实现，尚未单独实机验收 | 未完成实机验证 |
 | 其他 ROM、固件和完整生命周期场景 | 尚未覆盖 | 未验证 |
 
@@ -39,12 +39,13 @@ beta.3 是公开测试版本，不代表所有 ROM、固件或系统页面都已
 
 | 设备/系统 | beta.3（32）结果 |
 | --- | --- |
-| 小米 17 Ultra / HyperOS 4 | 三个 Device 页面入口的完整主要流程已通过 |
+| 小米 17 Ultra（代号 `nezha`）/ HyperOS 4 | 三个 Device 页面入口的完整主要流程已通过 |
 | 小米 11 Ultra / HyperOS 2 底层、HyperOS 3 上层移植包 | 三个 Device 页面入口的完整主要流程已通过 |
-| Xiaomi `nezha` / Android 17 / HyperOS `OS4.0.0.17.XPACNXM` | 历史记录：**选择 AZ100、耳机颜色、设备图片** 三个入口点击无响应；其余已记录桥接功能按文档范围验证 |
 | 其他 HyperOS/Android 版本、AZ100 固件或未列出的设备 | 未验证 |
 
 “完整主要流程”仅指上述 Device 页面入口及其主要操作路径；主题、旋转、字体缩放、后台恢复、多设备和所有异常路径仍需单独验收。已记录的 AZ100 固件基线为 `JNZ1ZE 1.040`。
+
+`nezha` 是小米 17 Ultra 的设备代号，两者为同一台测试设备。该设备早期记录的系统为 Android 17 / `OS4.0.0.17.XPACNXM`；早期入口无响应记录已由后续 beta.3/32 主要流程通过的反馈更新，不代表另一台仍失败的设备。最新反馈未重新核对精确系统构建号。
 
 ## 下载、校验与安装
 
@@ -94,7 +95,6 @@ apksigner verify --verbose --print-certs .\TechnicsPods-0.10.0-beta.3-release.ap
 
 ## 已知限制
 
-- 在 Xiaomi `nezha` / Android 17 / `OS4.0.0.17.XPACNXM` 记录中，Device 页的“选择 AZ100”“耳机颜色”“设备图片”入口仍无响应；相关修复已暂停，详见[当前交接记录](docs/CURRENT_SESSION_HANDOFF.md)。
 - 原生 Settings ANC 强度级别尚未确认，不会被模块宣称或写入。
 - Fusion 外层蓝色手机主机标记、六个 HyperOS 电池槽的完整充电语义仍待验证。
 - 自动颜色、官方应用所有权切换、后台恢复、多设备资源和未知 ROM 尚未完成完整实机验收。

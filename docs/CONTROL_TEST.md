@@ -2,9 +2,9 @@
 
 The shared module-process write runtime was introduced in `0.10.0-beta.1` and is retained in the current `0.10.0-beta.2`. The homepage has no daily controls. Advanced diagnostics exposes off / ANC / ambient commands and the verified AZ100 `1..100` noise level. The old separate fixed-75 round-trip client has been removed.
 
-## Current device feedback — 2026-10-11
+## Current device feedback — 2026-10-12
 
-The user has confirmed mode control and state updates in both system entry points, Settings haptic feedback, the status-bar headset icon, and now Settings Bluetooth detail artwork replacement. MiLink/control-center artwork also replaces, with source-resolution softness remaining. The module's device-page **选择 AZ100**, **耳机颜色** and **设备图片** rows were reported working on beta.3/32 on Xiaomi 17 Ultra / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package; the earlier `nezha` record remains unresponsive. This feedback does not complete the broader coexistence, multi-device and lifecycle acceptance matrix.
+The user has confirmed mode control and state updates in both system entry points, Settings haptic feedback, the status-bar headset icon, and now Settings Bluetooth detail artwork replacement. MiLink/control-center artwork also replaces, with source-resolution softness remaining. The module's device-page **选择 AZ100**, **耳机颜色** and **设备图片** rows were reported working on beta.3/32 on Xiaomi 17 Ultra (codename `nezha`) / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package. The earlier `nezha` failure report describes the same Xiaomi 17 Ultra and was superseded by its later main-workflow report. This feedback does not complete the broader coexistence, multi-device and lifecycle acceptance matrix.
 
 ## Transaction
 

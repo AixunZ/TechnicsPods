@@ -2,7 +2,7 @@
 
 The `0.10.0-beta.2` candidate retains beta.1's opt-in connected-device foreground management. It samples the read-only AZ100 endpoint every 30 seconds through the central runtime used by manual and system control requests. System hooks consume Provider snapshots asynchronously; they do not perform RFCOMM I/O in host callbacks. Official-app handover and disconnect recovery remain pending dedicated physical acceptance.
 
-Status synchronized 2026-10-11: user reports confirm current system control/state updates, Settings haptics, status-bar rendering and both system image replacements. The three Device-page configuration rows were reported working on beta.3/32 on Xiaomi 17 Ultra / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package; the earlier `nezha` record remains unresponsive. No broad boot/background/ownership acceptance follows from these device-specific results; see [current handoff](CURRENT_SESSION_HANDOFF.md).
+Status synchronized 2026-10-12: user reports confirm current system control/state updates, Settings haptics, status-bar rendering and both system image replacements. The three Device-page configuration rows were reported working on beta.3/32 on Xiaomi 17 Ultra (codename `nezha`) / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package. The earlier `nezha` failure describes the same Xiaomi 17 Ultra and is superseded by the later main-workflow report. No broad boot/background/ownership acceptance follows from these device-specific results; see [public beta acceptance](PUBLIC_BETA_ACCEPTANCE.md).
 
 ## Physical-device test
 
@@ -34,6 +34,6 @@ The service submits read-only requests to `Az100ConnectionRuntime`, which owns t
 
 ## Beta limitations
 
-Basic status-bar rendering is user-confirmed; profile reconciliation, multi-headset ownership and capability-record accuracy still need dedicated acceptance. A cached state is returned while a background Provider read is pending. Settings ANC-strength levels remain unavailable until the host encoding is verified. Device-page selection is host-specific: reported working on the two beta.3/32 hosts above and inaccessible in the earlier `nezha` record.
+Basic status-bar rendering is user-confirmed; profile reconciliation, multi-headset ownership and capability-record accuracy still need dedicated acceptance. A cached state is returned while a background Provider read is pending. Settings ANC-strength levels remain unavailable until the host encoding is verified. Device-page selection is reported working on the two beta.3/32 hosts above; the earlier `nezha` failure is historical and does not describe a separate host.
 
 If official ownership cannot be confirmed after process recovery, the module keeps yielding. Restart Technics Audio Connect to reannounce its sessions, or turn Bluetooth fully off and on. A confirmed adapter-off state releases the recovery lock because no live Bluetooth socket can remain; subsequent connection/state reads must establish freshness again.

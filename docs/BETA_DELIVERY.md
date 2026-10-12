@@ -1,6 +1,6 @@
 # Beta delivery
 
-Public candidate: `0.10.0-beta.3` / versionCode `32`. This is the first public test release and the GitHub release is marked **Pre-release**. The About page developer credit is `AixunZ`. Release signing, local packaging and the GitHub upload are complete. The signing key is supplied through environment variables and no private key or password belongs in this repository.
+Public candidate: `0.10.0-beta.3` / versionCode `32`. This is the first public test release and the GitHub release is marked **Pre-release**. The developer is `AixunZ`. Release signing, local packaging and the GitHub upload are complete. The signing key is supplied through environment variables and no private key or password belongs in this repository.
 
 ## Beta.3 public release contract
 
@@ -18,7 +18,7 @@ The GitHub Pre-release upload is not represented as complete by local packaging;
 
 The release APK must report package `dev.technics.pods`, `versionName=0.10.0-beta.3` and `versionCode=32`. Before publishing, verify the maintainer certificate with `apksigner`, compute SHA-256 for every attachment and inspect the source archive for SDKs, build outputs, captures, logs, keys and the temporary `$out` directory. These checks completed for the local package. Debug, test-signed, unsigned and instrumentation APKs stay local and are not public default downloads.
 
-The three Device-page rows **选择 AZ100**, **耳机颜色** and **设备图片** were reported working on beta.3/32 on Xiaomi 17 Ultra / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package. The earlier Xiaomi `nezha` record still reports no response from those rows. No adb device was available for this release workflow, so instrumentation execution and complete cross-ROM physical acceptance are not claimed. The device-specific results and remaining boundaries are documented in [public beta acceptance](PUBLIC_BETA_ACCEPTANCE.md).
+The three Device-page rows **选择 AZ100**, **耳机颜色** and **设备图片** were reported working on beta.3/32 on Xiaomi 17 Ultra (codename `nezha`) / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package. The earlier `nezha` failure report describes the same Xiaomi 17 Ultra and was superseded by its later beta.3/32 main-workflow report. No adb device was available for this release workflow, so instrumentation execution and complete cross-ROM physical acceptance are not claimed. The device-specific results and remaining boundaries are documented in [public beta acceptance](PUBLIC_BETA_ACCEPTANCE.md).
 
 ## Historical beta.2 artifacts
 
@@ -38,7 +38,7 @@ The test certificate remains `610bdf09702579a3c9328886e5d514c266e1ef573abd1bd7ab
 
 Local checks pass: all 124 unit tests, Debug, minified Release and Android instrumentation APK compilation. Lint has no errors; the exact warning count is recorded in the generated delivery manifest. Release packaging preserves manifest components, the artwork manifest and adapted `META-INF/xposed/java_init.list`, `module.prop` and `scope.list`. Debug, minified test-signed Release and instrumentation APK signatures are verified during packaging.
 
-User reports confirm both system entries' control/state updates, Settings haptics, status-bar rendering and MiLink artwork replacement. The beta.3/32 follow-up reports all three Device-page actions working on the two additional test devices listed above, while the earlier `nezha` record remains unresolved. The report is device-specific physical acceptance, not a complete cross-ROM checklist or an adb instrumentation run. Compose click cases compile but have not been executed; the existing instrumentation APK does not include the latest click case. See [acceptance results](PUBLIC_BETA_ACCEPTANCE.md).
+User reports confirm both system entries' control/state updates, Settings haptics, status-bar rendering and MiLink artwork replacement. The beta.3/32 follow-up reports all three Device-page actions working on the two test devices listed above. Xiaomi 17 Ultra and `nezha` are the same device, whose earlier failure remains a historical result. The report is device-specific physical acceptance, not a complete cross-ROM checklist or an adb instrumentation run. Compose click cases compile but have not been executed; the existing instrumentation APK does not include the latest click case. See [acceptance results](PUBLIC_BETA_ACCEPTANCE.md).
 
 The supplied Technics Audio Connect 5.0.1 APK was reviewed and five AZ100 finish sets are bundled with provenance and SHA-256 hashes. Settings artwork uses an identity-bound conservative header candidate, now user-confirmed for basic rendering. Automatic colour selection, manual override/import, device switching and all lifecycle/fallback cases have not been individually accepted. See [artwork mapping](artwork-beta2.md).
 

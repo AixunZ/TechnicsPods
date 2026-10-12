@@ -2,7 +2,7 @@
 
 The independent RFCOMM client and shared module-process runtime introduced in `0.10.0-beta.1` are retained in `0.10.0-beta.2`. Manual diagnostics and the opt-in background monitor submit read-only requests through that owner; control requests use the same exclusive queue.
 
-As of the user's beta.3/32 reports, both system entry points control and update state normally, Settings artwork replacement succeeds, and the module Device-page **选择 AZ100**, **耳机颜色** and **设备图片** paths were reported working on Xiaomi 17 Ultra / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package. The earlier Xiaomi `nezha` record still has unresponsive entries, so picker/import behavior remains host-specific rather than a universal compatibility claim.
+As of the user's beta.3/32 reports, both system entry points control and update state normally, Settings artwork replacement succeeds, and the module Device-page **选择 AZ100**, **耳机颜色** and **设备图片** paths were reported working on Xiaomi 17 Ultra (codename `nezha`) / HyperOS 4 and Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 upper-layer port package. The earlier `nezha` failure describes the same Xiaomi 17 Ultra and was superseded by its later main-workflow report. These reports do not establish compatibility on untested hosts.
 
 ## Before running
 

@@ -1,12 +1,12 @@
 # TechnicsPods 项目状态
 
-最后更新：2026-10-11（公开 beta.3）
+最后更新：2026-10-12（公开 beta.3；更正设备身份及开发者表述）
 
 ## Beta.3 公开测试版
 
-候选版本：`0.10.0-beta.3` / `versionCode 32`。这是首个公开测试版，已在 GitHub 以 **Pre-release** 发布。关于页开发者署名为 **AixunZ**。公开包集合已生成并上传，包括维护者签名的 Release APK、匹配的源码归档和 mapping、`SHA256SUMS.txt` 以及 `delivery-manifest.json`。已验证的发布证书 SHA-256 为 `97598098835abf3b86d18b028333a3c06d575fd7a0f5e14e2a4d438b5b13292d`，发布 APK SHA-256 为 `c6257b7105a594d5d1814715bc41594089b0938814b8a37d2c93a3a065051986`。私有签名材料保留在仓库之外。
+候选版本：`0.10.0-beta.3` / `versionCode 32`。这是首个公开测试版，已在 GitHub 以 **Pre-release** 发布。开发者为 **AixunZ**。公开包集合已生成并上传，包括维护者签名的 Release APK、匹配的源码归档和 mapping、`SHA256SUMS.txt` 以及 `delivery-manifest.json`。已验证的发布证书 SHA-256 为 `97598098835abf3b86d18b028333a3c06d575fd7a0f5e14e2a4d438b5b13292d`，发布 APK SHA-256 为 `c6257b7105a594d5d1814715bc41594089b0938814b8a37d2c93a3a065051986`。私有签名材料保留在仓库之外。
 
-三个 Device 页面行 **选择 AZ100**、**耳机颜色** 和 **设备图片** 已在 beta.3/32 的小米 17 Ultra / HyperOS 4，以及小米 11 Ultra（HyperOS 2 底层、HyperOS 3 上层移植包）上报告可用；原 Xiaomi `nezha` / Android 17 / HyperOS `OS4.0.0.17.XPACNXM` 记录仍无响应。本次发布流程没有可用 adb 实机，因此不宣称 instrumentation 执行或完整跨 ROM 硬件验收已经通过。
+三个 Device 页面行 **选择 AZ100**、**耳机颜色** 和 **设备图片** 已在 beta.3/32 的小米 17 Ultra（代号 `nezha`）/ HyperOS 4，以及小米 11 Ultra（HyperOS 2 底层、HyperOS 3 上层移植包）上报告主要操作流程通过。`nezha` 与小米 17 Ultra 是同一台测试设备，其早期入口无响应记录已由最新复测结果取代，不再列为当前限制。历史 Android 17 / HyperOS `OS4.0.0.17.XPACNXM` 信息仅表示当时采集的系统基线，最新复测未重新采集精确构建号。本次发布流程没有可用 adb 实机，因此不宣称 instrumentation 执行或完整跨 ROM 硬件验收已经通过。
 
 对于公开项目页面，维护者估算截至 2026-10-11 开发过程中使用了超过 5 亿 GPT tokens。维护者列出的模型包括 GPT-5.6-sol、GPT-6.0-Astra 和 GPT-6.1-sol。这是维护者提供的估算，不代表 OpenAI 背书，也未经独立审计。具体限制见 [beta.3 发布说明](BETA3_RELEASE.md)，产物边界见 [beta 交付](BETA_DELIVERY.md)。
 
@@ -31,7 +31,7 @@ Device 页面 **选择 AZ100**、**耳机颜色** 和 **设备图片** 仍不能
 ## 记录基线和历史证据
 
 - 当前候选：`0.10.0-beta.3` / `versionCode 32`；历史 beta.2 code 31、beta.1 code 30
-- 原始测试设备：Xiaomi `nezha`、Android 17、HyperOS `OS4.0.0.17.XPACNXM`
+- 原始测试设备：小米 17 Ultra（代号 `nezha`）；当时采集的系统基线为 Android 17、HyperOS `OS4.0.0.17.XPACNXM`，不代表最新复测重新核验了这些版本
 - 耳机：Technics EAH-AZ100，固件 `JNZ1ZE 1.040`
 - 抓包所用官方应用：Technics Audio Connect 4.4.0
 - 历史路由日志：`LSPosed_20260831_015717.zip`；最新渲染反馈为用户 2026-10-11 报告
@@ -40,9 +40,8 @@ Device 页面 **选择 AZ100**、**耳机颜色** 和 **设备图片** 仍不能
 
 | 主机 | 证据 | 范围 |
 |---|---|---|
-| 小米 17 Ultra / HyperOS 4 | beta.3/32 实机完整 Device 页面主要流程通过 | 设备页流程；不扩展到未覆盖生命周期、主题、旋转或其他 ROM |
+| 小米 17 Ultra（`nezha`）/ HyperOS 4 | beta.3/32 实机完整 Device 页面主要流程通过；同一设备早期失败记录已被最新复测取代 | 设备页流程；不扩展到未覆盖生命周期、主题、旋转或其他 ROM；历史精确系统版本未重新采集 |
 | 小米 11 Ultra（HyperOS 2 底层、HyperOS 3 上层移植包） | beta.3/32 实机完整 Device 页面主要流程通过 | 该设备和移植包的设备页流程；其他变体未知 |
-| Xiaomi `nezha`、Android 17、HyperOS `OS4.0.0.17.XPACNXM` | 记录中的 LSPosed 路由日志和用户硬件确认 | Fusion 内页、Settings 模式路径、AZ100 身份/电量/状态；三个 Device 页面入口仍无响应 |
 | `com.milink.service` `18.1.2.2.2608192125` / code `180010202` | 历史宿主清单；之后用户报告控制/状态与 artwork | 记录中的宿主版本；最新包版本未重新采集 |
 | `com.android.settings` `17` / code `37` | 历史宿主清单；用户控制/触感报告及 2026-10-11 图片成功 | 记录中的宿主版本；最新包版本未重新采集 |
 | `com.xiaomi.bluetooth` `17` / code `37` | `success_half_modules.log`、Surface 进程就绪 | 记录中的运行时宿主版本；beta 尚未测试 |
@@ -82,7 +81,7 @@ Device 页面 **选择 AZ100**、**耳机颜色** 和 **设备图片** 仍不能
   - 进入 `com.miui.circulateplus.world.headset.HeadsetDetailFragment`。
 - 状态栏回调发现对记录中的 A2DP 签名是精确的，基本渲染已由用户确认。profile 启动协调和多耳机行为仍待专门验收。
 - MiLink 使用已验证的图片 ID；Settings 使用绑定身份的保守大标题选择器。两处图片替换均在原始记录手机上由用户确认，仍待更多生命周期/切换设备场景。
-- 协议在型号确认后读取 AZ100 颜色并保留自动外观选择。手动覆盖和图片来源路径已在上述两台 beta.3/32 主机上报告可用；原 `nezha` 记录仍无响应，自动颜色尚未单独验收。
+- 协议在型号确认后读取 AZ100 颜色并保留自动外观选择。手动覆盖和图片来源路径已在上述两台 beta.3/32 主机上报告可用；自动颜色尚未单独验收。
 
 最终路由日志包含：
 
@@ -96,7 +95,6 @@ Routed AZ100 MainCardView request to HeadsetContentController
 ## 尚未正常工作的部分
 
 - Fusion Device Center 外层 AZ100 卡片不显示蓝色手机宿主标记。这是独立于内层面板路由的设备宿主/状态模型。
-- Device 页面 **选择 AZ100**、**耳机颜色** 和 **设备图片** 与主机有关：在上述两台 beta.3/32 主机上报告可用，原 `nezha` 记录仍无响应。
 - 两个当前系统入口的控制/状态路径已由用户确认。待处理/错误显示、官方所有权以及取消/生命周期边界仍需专门测试。
 - MiLink artwork 仍偏软；官方耳机盒素材只有 176×130。未加入锐化或其他来源。
 - 充电标志和离线/过期状态需要更多 ROM 专项验证。
@@ -122,8 +120,8 @@ Routed AZ100 MainCardView request to HeadsetContentController
 
 公开 beta 已发布。后续维护应保留当前用户确认的系统路径并按以下顺序处理：
 
-1. 在 `nezha` 主机上复查 Device 页面入口，并执行 Compose 点击用例；在扩大两台 beta.3/32 成功结果前先完成硬件复现。
-2. 入口可用后，分别验证自动颜色、手动覆盖/导入，以及 Settings/MiLink 设备切换、异步宿主写入和原图恢复。
+1. 在小米 17 Ultra（`nezha`）和小米 11 Ultra 上补充精确构建信息及可复现证据，并执行 Compose 点击用例；不把两台设备已报告的主要流程结果扩展为完整回归通过。
+2. 分别补充验证自动颜色、手动覆盖/导入边界，以及 Settings/MiLink 设备切换、异步宿主写入和原图恢复。
 3. 使用多耳机同时连接确认自动管理、官方应用所有权、取消/重连和状态栏所有权。
 4. 完成 `PUBLIC_BETA_ACCEPTANCE.md` 中剩余的主题/字号/旋转/后台/未知 ROM 场景。
 5. 确定 Settings 原生级别编码后再启用其写入；维护者签名和公开上传已是独立完成项。
@@ -149,4 +147,4 @@ Routed AZ100 MainCardView request to HeadsetContentController
 
 APK：`app/build/outputs/apk/debug/app-debug.apk`
 
-124 个单元测试通过；Lint 为 0 个错误、60 个警告。Debug 和 minified Release 已构建并检查本地测试签名。Instrumentation 用例（包括新增的 Device 行点击用例）已编译但没有通过 adb 运行；打包的测试 APK 早于新增点击用例。用户报告了两台 beta.3/32 主机的设备特定实机结果，以及原 `nezha` 记录中的未解决点击；不宣称完整跨 ROM 清单或 adb 支持的验收通过。本次状态同步不重新构建或替换 APK。当前产物/源码边界见 `BETA_DELIVERY.md`。
+124 个单元测试通过；Lint 为 0 个错误、60 个警告。Debug 和 minified Release 已构建并检查本地测试签名。Instrumentation 用例（包括新增的 Device 行点击用例）已编译但没有通过 adb 运行；打包的测试 APK 早于新增点击用例。用户报告了小米 17 Ultra（`nezha`）和小米 11 Ultra 两台 beta.3/32 主机的设备特定实机结果，同一台 `nezha` 设备的早期入口失败记录已由最新复测取代；不宣称完整跨 ROM 清单或 adb 支持的验收通过。本次状态同步不重新构建或替换 APK。当前产物/源码边界见 `BETA_DELIVERY.md`。

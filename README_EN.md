@@ -13,7 +13,7 @@ The project is informed by the public research and ideas of [HuaweiPods](https:/
 - **Package:** `dev.technics.pods`
 - **Supported earbud model:** Technics EAH-AZ100
 - **Public download:** [GitHub Releases](https://github.com/AixunZ/TechnicsPods/releases/tag/v0.10.0-beta.3)
-- **Developer shown in the About page:** **AixunZ**
+- **Developer:** **AixunZ**
 
 Beta.3 is a public test build. It does not claim that every ROM, firmware version or system page has completed physical acceptance. Install it only where LSPosed rollback and log collection are available.
 
@@ -27,7 +27,7 @@ Beta.3 is a public test build. It does not claim that every ROM, firmware versio
 | Open the stock headset detail page from Fusion Device Center | Delayed route to the stock page | Verified on the recorded ROM profile |
 | Own the wireless-headset status-bar icon | Multi-profile state reconciliation | Verified for the known callback signature |
 | Replace AZ100 artwork in MiLink and Settings | Conservative resource matching | Rendering confirmed on test devices |
-| Manual Device-page device, colour and image selection | Main workflows were reported working on the two additional hosts; the `nezha` baseline's entry rows do not respond | Verified per device |
+| Manual Device-page device, colour and image selection | Main workflows were reported working on Xiaomi 17 Ultra (`nezha`) and Xiaomi 11 Ultra | Verified per device |
 | Automatic colour recognition and artwork selection | Implemented; no separate physical acceptance | Physical verification pending |
 | Other ROMs, firmware and complete lifecycle scenarios | Not covered | Unverified |
 
@@ -39,12 +39,13 @@ These records describe combinations for which evidence was supplied; they do not
 
 | Device / system | beta.3 (`32`) result |
 | --- | --- |
-| Xiaomi 17 Ultra / HyperOS 4 | The three Device-page entry workflows and their main actions were reported as passing |
+| Xiaomi 17 Ultra (codename `nezha`) / HyperOS 4 | The three Device-page entry workflows and their main actions were reported as passing |
 | Xiaomi 11 Ultra / HyperOS 2 base with a HyperOS 3 port package | The three Device-page entry workflows and their main actions were reported as passing |
-| Xiaomi `nezha` / Android 17 / HyperOS `OS4.0.0.17.XPACNXM` | Historical record: **选择 AZ100**, **耳机颜色** and **设备图片** remain unresponsive; other bridge behavior was verified only within the documented scope |
 | Other HyperOS/Android versions, AZ100 firmware or unlisted devices | Unverified |
 
 “Complete main workflow” means the listed Device-page entries and their primary actions on that setup. Themes, rotation, font scaling, background recovery, multi-device behavior and all error paths still need separate acceptance. The recorded AZ100 firmware baseline is `JNZ1ZE 1.040`.
+
+`nezha` is the codename of Xiaomi 17 Ultra; both names refer to the same test device. Its earlier recorded system was Android 17 / `OS4.0.0.17.XPACNXM`. The earlier unresponsive-entry report was superseded by the later beta.3/32 main-workflow success report, rather than describing another failing device. The latest report did not recheck the exact system build.
 
 ## Download, verify and install
 
@@ -92,7 +93,6 @@ The scope source of truth is `META-INF/xposed/scope.list` inside the APK. Beta.1
 
 ## Known limitations
 
-- On the recorded Xiaomi `nezha` / Android 17 / `OS4.0.0.17.XPACNXM` setup, the Device-page rows **选择 AZ100**, **耳机颜色** and **设备图片** do not respond to taps. Device selection, manual colour changes and image import are unavailable through those rows there; repair is paused for this beta. See the [current handoff](docs/CURRENT_SESSION_HANDOFF.md).
 - Native Settings ANC-strength encoding is unverified and is not advertised or written.
 - The Fusion outer blue phone-host marker and complete charging semantics for all six HyperOS battery slots remain unverified.
 - Automatic colour, official-app ownership handover, background recovery, multi-device artwork and unknown ROMs have not completed full physical acceptance.
